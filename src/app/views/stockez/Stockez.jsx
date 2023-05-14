@@ -3,16 +3,20 @@ import {
   Icon,
   IconButton,
   styled,
-  Table,
+  Paper,
   TableBody,
+  TableRow,
   TableCell,
-  TableHead,
-  TablePagination,
-  TableRow
+  Toolbar,
+  Table,
+  TextField
 } from '@mui/material';
 import { Breadcrumb, SimpleCard } from 'app/components';
 import { useState } from 'react';
 import useUser from 'app/hooks/useUser';
+import useTable from '../material-kit/tables/hooks/useTable';
+import { useClasses } from '../material-kit/tables/hooks/useClasses';
+import { useEffect } from 'react';
 
 const StyledTable = styled(Table)(() => ({
   whiteSpace: 'pre',
@@ -40,74 +44,100 @@ const Container = styled('div')(({ theme }) => ({
 const Stockez = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const { deleteUser, createUser, users } = useUser();
-  console.log('users', users);
-  const stockezList = users;
+  const { getUsers, deleteUser, createUser, users } = useUser();
 
-  const handleChangePage = (_, newPage) => {
-    setPage(newPage);
-  };
+  useEffect(() => {
+    console.log('User Context calling');
+    getUsers(1);
+  }, []);
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+  const styles = (theme) => ({
+    pageContent: {
+      margin: theme.spacing(5),
+      padding: theme.spacing(3)
+    },
+    searchInput: {
+      width: '100%'
+    }
+  });
+
+  const classes = useClasses(styles);
+
+  const headCells = [
+    { id: 'user_id', label: 'Id' },
+    { id: 'username', label: 'Username' },
+    { id: 'name', label: 'Name' },
+    { id: 'sto_id', label: 'Super Stockes' },
+    { id: 'revenue', label: 'Revenue' },
+    { id: 'type', label: 'Type' },
+    { id: 'balance', label: 'Credit' },
+    { id: 'block', label: 'Block' },
+    { id: 'actions', label: 'Actions' }
+  ];
+
+  const [filterFn, setFilterFn] = useState({
+    fn: (items) => {
+      return items;
+    }
+  });
+
+  const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } = useTable(
+    users,
+    headCells,
+    filterFn
+  );
+
+  const handleSearch = (e) => {
+    let target = e.target;
+    setFilterFn({
+      fn: (items) => {
+        if (target.value == '') return items;
+        else return items.filter((x) => x.username.toLowerCase().includes(target.value));
+      }
+    });
   };
   return (
     <Container>
-      <Box className="breadcrumb">
-        <Breadcrumb routeSegments={[{ name: 'Stockez', path: '/stockez' }]} />
-      </Box>
       <SimpleCard title="Stockez">
         <Box width="100%" overflow="auto">
-          <StyledTable>
-            <TableHead>
-              <TableRow>
-                <TableCell align="left">Id</TableCell>
-                <TableCell align="center">Username</TableCell>
-                <TableCell align="center">Name</TableCell>
-                <TableCell align="center">Super Stockes</TableCell>
-                <TableCell align="center">Revenue</TableCell>
-                <TableCell align="center">Type</TableCell>
-                <TableCell align="right">Credit</TableCell>
-                <TableCell align="center">Block</TableCell>
-                <TableCell align="center">Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {stockezList
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((subscriber, index) => (
-                  <TableRow key={index}>
-                    <TableCell align="left">{subscriber.user_id}</TableCell>
-                    <TableCell align="center">{subscriber.username}</TableCell>
-                    <TableCell align="center">{subscriber.name}</TableCell>
-                    <TableCell align="center"></TableCell>
-                    <TableCell align="center">{subscriber.revenue}</TableCell>
-                    <TableCell align="center">{subscriber.type}</TableCell>
-                    <TableCell align="center"></TableCell>
-                    <TableCell align="center"></TableCell>
-                    <TableCell align="right">
-                      <IconButton>
-                        <Icon color="error">close</Icon>
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </StyledTable>
-
-          <TablePagination
-            sx={{ px: 2 }}
-            page={page}
-            component="div"
-            rowsPerPage={rowsPerPage}
-            count={stockezList.length}
-            onPageChange={handleChangePage}
-            rowsPerPageOptions={[5, 10, 25]}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            nextIconButtonProps={{ 'aria-label': 'Next Page' }}
-            backIconButtonProps={{ 'aria-label': 'Previous Page' }}
-          />
+          {/* <PageHeader
+            title="New Employee"
+            subTitle="Form design with validation"
+            icon={<PeopleOutlineTwoToneIcon fontSize="large" />}
+          /> */}
+          {users && (
+            <Paper>
+              {/* <EmployeeForm /> */}
+              <Toolbar>
+                <TextField
+                  variant="outlined"
+                  label="Search Stockez"
+                  className={classes.searchInput}
+                  onChange={handleSearch}
+                />
+              </Toolbar>
+              <TblContainer>
+                <TblHead />
+                <TableBody>
+                  {recordsAfterPagingAndSorting &&
+                    recordsAfterPagingAndSorting().map((item) => (
+                      <TableRow key={item.user_id}>
+                        <TableCell>{item.user_id}</TableCell>
+                        <TableCell>{item.username}</TableCell>
+                        <TableCell>{item.name}</TableCell>
+                        <TableCell>{item.sto_id}</TableCell>
+                        <TableCell>{item.revenue}</TableCell>
+                        <TableCell>{item.type}</TableCell>
+                        <TableCell>{item.balance}</TableCell>
+                        <TableCell></TableCell>
+                        <TableCell></TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </TblContainer>
+              <TblPagination />
+            </Paper>
+          )}
         </Box>
       </SimpleCard>
     </Container>

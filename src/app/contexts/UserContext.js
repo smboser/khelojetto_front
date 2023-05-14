@@ -50,18 +50,9 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const getUsers = async () => {
+  const getUsers = async (typeId) => {
     try {
-      const res = await axios.get('/api/notification');
-      dispatch({ type: 'LOAD_USERS', payload: res.data });
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const getStockez = async () => {
-    try {
-      const res = await http.httpAll.get('users/type/1');
+      const res = await http.httpAll.get(`users/type/${typeId}`);
       console.log('res', res.data);
       dispatch({ type: 'LOAD_USERS', payload: res.data });
     } catch (e) {
@@ -78,15 +69,15 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    getStockez();
-  }, []);
+  // useEffect(() => {
+  //   console.log('User Context calling');
+  //   getStockez(1);
+  // }, []);
 
   return (
     <UserContext.Provider
       value={{
         getUsers,
-        getStockez,
         deleteUser,
         clearUsers,
         createUser,

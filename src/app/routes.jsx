@@ -18,7 +18,7 @@ const AppEchart = Loadable(lazy(() => import('app/views/charts/echarts/AppEchart
 // dashboard page
 const Analytics = Loadable(lazy(() => import('app/views/dashboard/Analytics')));
 
-const Stockez = Loadable(lazy(() => import('app/views/stockez/Stockez')));
+const AppStockez = Loadable(lazy(() => import('app/views/stockez/AppStockez')));
 
 const routes = [
   {
@@ -45,7 +45,7 @@ const routes = [
 
       {
         path: '/users/stockez',
-        element: <Stockez />,
+        element: <AppStockez />,
         auth: authRoles.admin
       }
     ]
