@@ -1,19 +1,19 @@
-import { createContext, useEffect, useReducer } from 'react';
+import { createContext, useReducer } from 'react';
 import axios from 'axios';
 import http from '../../config/http';
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'LOAD_USERS': {
-      return { ...state, users: action.payload };
+      return { ...state, users: action.payload, contextStatus: null, contextMsg: null };
     }
 
     case 'DELETE_USER': {
       return { ...state, users: action.payload };
     }
 
-    case 'CLEAR_USERS': {
-      return { ...state, users: action.payload };
+    case 'CREATE_USER': {
+      return { ...state, ...action.payload };
     }
 
     default:
@@ -60,11 +60,18 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const createUser = async (notification) => {
+  const createUser = async (user) => {
     try {
-      const res = await axios.post('/api/notification/add', { notification });
-      dispatch({ type: 'CREATE_USER', payload: res.data });
+      const res = await http.httpAll.post(`users/add`, { ...user });
+      dispatch({
+        type: 'CREATE_USER',
+        payload: { contextStatus: 1, contextMsg: 'User created successfully.' }
+      });
     } catch (e) {
+      dispatch({
+        type: 'CREATE_USER',
+        payload: { contextStatus: 0, contextMsg: 'Error! Please try later.' }
+      });
       console.error(e);
     }
   };
@@ -81,7 +88,9 @@ export const UserProvider = ({ children }) => {
         deleteUser,
         clearUsers,
         createUser,
-        users: state.users
+        users: state.users,
+        contextMsg: state.contextMsg,
+        contextStatus: state.contextStatus
       }}
     >
       {children}

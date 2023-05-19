@@ -32,7 +32,7 @@ const StyledTable = styled('table')(({ theme }) => ({
   marginTop: theme.spacing(3),
   width: '100%',
   '& thead th': {
-    fontWeight: '900',
+    fontWeight: '600',
     backgroundColor: 'theme.palette.primary.light',
     minWidth: '50px'
   },

@@ -1,15 +1,15 @@
 import {
   Box,
   Icon,
-  IconButton,
+  Fab,
   styled,
   Paper,
   TableBody,
   TableRow,
   TableCell,
   Toolbar,
-  Table,
-  TextField
+  TextField,
+  useTheme
 } from '@mui/material';
 import { Breadcrumb, SimpleCard } from 'app/components';
 import { useState } from 'react';
@@ -17,16 +17,7 @@ import useUser from 'app/hooks/useUser';
 import useTable from '../material-kit/tables/hooks/useTable';
 import { useClasses } from '../material-kit/tables/hooks/useClasses';
 import { useEffect } from 'react';
-
-const StyledTable = styled(Table)(() => ({
-  whiteSpace: 'pre',
-  '& thead': {
-    '& tr': { '& th': { paddingLeft: 0, paddingRight: 0 } }
-  },
-  '& tbody': {
-    '& tr': { '& td': { paddingLeft: 0, textTransform: 'capitalize' } }
-  }
-}));
+import { NavLink } from 'react-router-dom';
 
 const Container = styled('div')(({ theme }) => ({
   margin: '30px',
@@ -42,9 +33,8 @@ const Container = styled('div')(({ theme }) => ({
 }));
 
 const Stockez = () => {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
   const { getUsers, deleteUser, createUser, users } = useUser();
+  const { palette } = useTheme();
 
   useEffect(() => {
     console.log('User Context calling');
@@ -98,48 +88,67 @@ const Stockez = () => {
   };
   return (
     <Container>
-      <SimpleCard title="Stockez">
-        <Box width="100%" overflow="auto">
-          {/* <PageHeader
+      <Box className="breadcrumb">
+        <Breadcrumb routeSegments={[{ name: 'Stockez', path: '/stockez' }]} />
+        <Container>
+          <SimpleCard title="Stockez">
+            <Box width="100%" overflow="auto">
+              {/* <PageHeader
             title="New Employee"
             subTitle="Form design with validation"
             icon={<PeopleOutlineTwoToneIcon fontSize="large" />}
           /> */}
-          {users && (
-            <Paper>
-              {/* <EmployeeForm /> */}
-              <Toolbar>
-                <TextField
-                  variant="outlined"
-                  label="Search Stockez"
-                  className={classes.searchInput}
-                  onChange={handleSearch}
-                />
-              </Toolbar>
-              <TblContainer>
-                <TblHead />
-                <TableBody>
-                  {recordsAfterPagingAndSorting &&
-                    recordsAfterPagingAndSorting().map((item) => (
-                      <TableRow key={item.user_id}>
-                        <TableCell>{item.user_id}</TableCell>
-                        <TableCell>{item.username}</TableCell>
-                        <TableCell>{item.name}</TableCell>
-                        <TableCell>{item.sto_id}</TableCell>
-                        <TableCell>{item.revenue}</TableCell>
-                        <TableCell>{item.type}</TableCell>
-                        <TableCell>{item.balance}</TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </TblContainer>
-              <TblPagination />
-            </Paper>
-          )}
-        </Box>
-      </SimpleCard>
+              {users && (
+                <Paper>
+                  {/* <EmployeeForm /> */}
+                  <Toolbar>
+                    <Box
+                      component="span"
+                      m={1}
+                      display="flex"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      sx={{ width: '100%' }}
+                    >
+                      <TextField
+                        variant="outlined"
+                        label="Search Stockez"
+                        className={classes.searchInput}
+                        onChange={handleSearch}
+                      />
+                      <NavLink to="/users/stockez/add" style={{ color: palette.primary.main }}>
+                        <Fab size="medium" color="primary" aria-label="Add" className="button">
+                          <Icon>add</Icon>
+                        </Fab>
+                      </NavLink>
+                    </Box>
+                  </Toolbar>
+                  <TblContainer>
+                    <TblHead />
+                    <TableBody>
+                      {recordsAfterPagingAndSorting &&
+                        recordsAfterPagingAndSorting().map((item) => (
+                          <TableRow key={item.user_id}>
+                            <TableCell>{item.user_id}</TableCell>
+                            <TableCell>{item.username}</TableCell>
+                            <TableCell>{item.name}</TableCell>
+                            <TableCell>{item.sto_id}</TableCell>
+                            <TableCell>{item.revenue}</TableCell>
+                            <TableCell>{item.type}</TableCell>
+                            <TableCell>{item.balance}</TableCell>
+                            <TableCell></TableCell>
+                            <TableCell></TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </TblContainer>
+                  <TblPagination />
+                </Paper>
+              )}
+            </Box>
+          </SimpleCard>
+        </Container>
+      </Box>
     </Container>
   );
 };
