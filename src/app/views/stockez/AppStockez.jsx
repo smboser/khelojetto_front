@@ -3,6 +3,7 @@ import { Breadcrumb } from 'app/components';
 import Stockez from './Stockez';
 import StockezAdd from './StockezAdd';
 import { UserProvider } from 'app/contexts/UserContext';
+import StockezEdit from './StockezEdit';
 
 const Container = styled('div')(({ theme }) => ({
   margin: '30px',
@@ -18,6 +19,8 @@ const AppStockez = (props) => {
   const displayApp = () => {
     if (props?.action && props.action === 'add') {
       return <StockezAdd />;
+    } else if (props?.action && props.action === 'edit') {
+      return <StockezEdit />;
     } else return <Stockez />;
   };
   return (

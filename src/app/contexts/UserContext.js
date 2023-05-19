@@ -60,12 +60,38 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const getUser = async (userId) => {
+    try {
+      const res = await http.httpAll.get(`users/${userId}`);
+      console.log('res', res.data);
+      dispatch({ type: 'LOAD_USERS', payload: res.data });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const createUser = async (user) => {
     try {
       const res = await http.httpAll.post(`users/add`, { ...user });
       dispatch({
         type: 'CREATE_USER',
         payload: { contextStatus: 1, contextMsg: 'User created successfully.' }
+      });
+    } catch (e) {
+      dispatch({
+        type: 'CREATE_USER',
+        payload: { contextStatus: 0, contextMsg: 'Error! Please try later.' }
+      });
+      console.error(e);
+    }
+  };
+
+  const updateUser = async (user, userId) => {
+    try {
+      const res = await http.httpAll.patch(`users/${userId}`, { ...user });
+      dispatch({
+        type: 'CREATE_USER',
+        payload: { contextStatus: 1, contextMsg: 'User updated successfully.' }
       });
     } catch (e) {
       dispatch({
@@ -85,9 +111,11 @@ export const UserProvider = ({ children }) => {
     <UserContext.Provider
       value={{
         getUsers,
+        getUser,
         deleteUser,
         clearUsers,
         createUser,
+        updateUser,
         users: state.users,
         contextMsg: state.contextMsg,
         contextStatus: state.contextStatus

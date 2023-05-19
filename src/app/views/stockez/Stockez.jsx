@@ -9,7 +9,8 @@ import {
   TableCell,
   Toolbar,
   TextField,
-  useTheme
+  useTheme,
+  IconButton
 } from '@mui/material';
 import { Breadcrumb, SimpleCard } from 'app/components';
 import { useState } from 'react';
@@ -17,7 +18,7 @@ import useUser from 'app/hooks/useUser';
 import useTable from '../material-kit/tables/hooks/useTable';
 import { useClasses } from '../material-kit/tables/hooks/useClasses';
 import { useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const Container = styled('div')(({ theme }) => ({
   margin: '30px',
@@ -35,6 +36,7 @@ const Container = styled('div')(({ theme }) => ({
 const Stockez = () => {
   const { getUsers, deleteUser, createUser, users } = useUser();
   const { palette } = useTheme();
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log('User Context calling');
@@ -50,6 +52,10 @@ const Stockez = () => {
       width: '100%'
     }
   });
+
+  const handleEdit = (userId) => {
+    navigate(`/users/stockez/edit/${userId}`);
+  };
 
   const classes = useClasses(styles);
 
@@ -98,7 +104,7 @@ const Stockez = () => {
             subTitle="Form design with validation"
             icon={<PeopleOutlineTwoToneIcon fontSize="large" />}
           /> */}
-              {users && (
+              {users && Array.isArray(users) && (
                 <Paper>
                   {/* <EmployeeForm /> */}
                   <Toolbar>
@@ -137,7 +143,18 @@ const Stockez = () => {
                             <TableCell>{item.type}</TableCell>
                             <TableCell>{item.balance}</TableCell>
                             <TableCell></TableCell>
-                            <TableCell></TableCell>
+                            <TableCell>
+                              <IconButton onClick={() => handleEdit(item.user_id)}>
+                                <Icon fontSize="large" color="secondary">
+                                  mode_edit
+                                </Icon>
+                              </IconButton>
+                              <IconButton>
+                                <Icon fontSize="large" color="error">
+                                  close
+                                </Icon>
+                              </IconButton>
+                            </TableCell>
                           </TableRow>
                         ))}
                     </TableBody>

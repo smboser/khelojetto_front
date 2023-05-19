@@ -59,6 +59,11 @@ const routes = [
         path: '/users/stockez/add',
         element: <StockezComponent action="add" />,
         auth: authRoles.admin
+      },
+      {
+        path: '/users/stockez/edit/:userId',
+        element: <StockezComponent action="edit" />,
+        auth: authRoles.admin
       }
     ]
   },
