@@ -37,7 +37,7 @@ const TextField = styled(TextValidator)(() => ({
 const StockezEdit = () => {
   const [state, setState] = useState({});
   const [response, setResponse] = useState(false); // For api response
-  const { getUsers, getUser, createUser, updateUser, users, contextMsg, contextStatus } = useUser();
+  const { getUser, updateUser, users, contextMsg, contextStatus } = useUser();
   const [loading, setLoading] = useState(false);
   const { userId } = useParams();
 

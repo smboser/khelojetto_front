@@ -32,11 +32,25 @@ const UserContext = createContext({
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, []);
 
-  const deleteUser = async (notificationID) => {
+  const deleteUser = async (userId) => {
+    console.log('Here at delete');
     try {
-      const res = await axios.post('/api/notification/delete', { id: notificationID });
-      dispatch({ type: 'DELETE_USER', payload: res.data });
+      const res = await http.httpAll.delete(`users/${userId}`);
+      if (res?.data?.deleted === true)
+        dispatch({
+          type: 'DELETE_USER',
+          payload: { contextStatus: 1, contextMsg: 'User deleted successfully.' }
+        });
+      else
+        dispatch({
+          type: 'DELETE_USER',
+          payload: { contextStatus: 1, contextMsg: 'Error! Please try later.' }
+        });
     } catch (e) {
+      dispatch({
+        type: 'DELETE_USER',
+        payload: { contextStatus: 1, contextMsg: 'Error! Please try later.' }
+      });
       console.error(e);
     }
   };

@@ -10,8 +10,16 @@ import {
   Toolbar,
   TextField,
   useTheme,
-  IconButton
+  IconButton,
+  Button,
+  Alert,
+  Snackbar
 } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import { Breadcrumb, SimpleCard } from 'app/components';
 import { useState } from 'react';
 import useUser from 'app/hooks/useUser';
@@ -34,7 +42,11 @@ const Container = styled('div')(({ theme }) => ({
 }));
 
 const Stockez = () => {
-  const { getUsers, deleteUser, createUser, users } = useUser();
+  const { getUsers, deleteUser, contextMsg, contextStatus, users } = useUser();
+  const [delOpen, setDelOpen] = useState(false);
+  const [delUsername, setDelUsername] = useState('');
+  const [delUserId, setDelUserId] = useState(0);
+  const [response, setResponse] = useState(false); // For api response
   const { palette } = useTheme();
   const navigate = useNavigate();
 
@@ -53,8 +65,37 @@ const Stockez = () => {
     }
   });
 
+  // Snackbar code
+  const [open, setOpen] = useState(false);
+  if (contextMsg && open === false && response === false) {
+    setResponse(true);
+    setOpen(true);
+  }
+  const handleClose = (_, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+  // Snackbar code
+
   const handleEdit = (userId) => {
     navigate(`/users/stockez/edit/${userId}`);
+  };
+
+  const handleDelete = (userId, username) => {
+    setDelOpen(true);
+    setDelUsername(username);
+    setDelUserId(userId);
+  };
+  const handleDelClose = () => setDelOpen(false);
+
+  const handleDelYes = () => {
+    if (delUserId > 0) {
+      console.log('delUserId', delUserId);
+      deleteUser(delUserId);
+    }
+    setDelOpen(false);
   };
 
   const classes = useClasses(styles);
@@ -96,6 +137,18 @@ const Stockez = () => {
     <Container>
       <Box className="breadcrumb">
         <Breadcrumb routeSegments={[{ name: 'Stockez', path: '/stockez' }]} />
+        {contextMsg && (
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert
+              onClose={handleClose}
+              severity={contextStatus === 1 ? 'success' : 'error'}
+              sx={{ width: '100%' }}
+              variant="filled"
+            >
+              {contextMsg}
+            </Alert>
+          </Snackbar>
+        )}
         <Container>
           <SimpleCard title="Stockez">
             <Box width="100%" overflow="auto">
@@ -149,7 +202,7 @@ const Stockez = () => {
                                   mode_edit
                                 </Icon>
                               </IconButton>
-                              <IconButton>
+                              <IconButton onClick={() => handleDelete(item.user_id, item.username)}>
                                 <Icon fontSize="large" color="error">
                                   close
                                 </Icon>
@@ -165,6 +218,31 @@ const Stockez = () => {
             </Box>
           </SimpleCard>
         </Container>
+
+        <Dialog
+          open={delOpen}
+          onClose={handleDelClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">Delete User ?</DialogTitle>
+
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you surce you want to delete User <strong>{delUsername}</strong> ?
+            </DialogContentText>
+          </DialogContent>
+
+          <DialogActions>
+            <Button onClick={handleDelYes} color="primary">
+              Yes
+            </Button>
+
+            <Button onClick={handleDelClose} color="primary" autoFocus>
+              Cancel
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </Container>
   );
