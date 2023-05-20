@@ -1,32 +1,19 @@
 import {
   Box,
-  Icon,
-  IconButton,
   styled,
   Paper,
   TableBody,
   TableRow,
   TableCell,
   Toolbar,
-  Table,
   TextField
 } from '@mui/material';
-import { Breadcrumb, SimpleCard } from 'app/components';
+import { SimpleCard } from 'app/components';
 import { useState } from 'react';
 import useSetpower from 'app/hooks/useSetpower';
 import useTable from '../material-kit/tables/hooks/useTable';
 import { useClasses } from '../material-kit/tables/hooks/useClasses';
 import { useEffect } from 'react';
-
-const StyledTable = styled(Table)(() => ({
-  whiteSpace: 'pre',
-  '& thead': {
-    '& tr': { '& th': { paddingLeft: 0, paddingRight: 0 } }
-  },
-  '& tbody': {
-    '& tr': { '& td': { paddingLeft: 0, textTransform: 'capitalize' } }
-  }
-}));
 
 const Container = styled('div')(({ theme }) => ({
   margin: '30px',
@@ -42,13 +29,11 @@ const Container = styled('div')(({ theme }) => ({
 }));
 
 const SetPower = () => {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const { getSetpowers,setpowers } = useSetpower();
+  const { getSetpowers, setpowers } = useSetpower();
 
   useEffect(() => {
-    console.log('Setpower Context calling');
     getSetpowers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const styles = (theme) => ({
@@ -86,7 +71,7 @@ const SetPower = () => {
     let target = e.target;
     setFilterFn({
       fn: (items) => {
-        if (target.value == '') return items;
+        if (target.value === '') return items;
         else return items.filter((x) => x.game_id.toLowerCase().includes(target.value));
       }
     });
@@ -117,7 +102,7 @@ const SetPower = () => {
                   {recordsAfterPagingAndSorting &&
                     recordsAfterPagingAndSorting().map((item) => (
                       <TableRow key={item.id}>
-					    <TableCell>{item.id}</TableCell>
+                        <TableCell>{item.id}</TableCell>
                         <TableCell>{item.game_id}</TableCell>
                         <TableCell>{item.power}</TableCell>
                         <TableCell></TableCell>

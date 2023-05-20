@@ -51,8 +51,8 @@ const Stockez = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('User Context calling');
     getUsers(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const styles = (theme) => ({
@@ -133,7 +133,7 @@ const Stockez = () => {
     let target = e.target;
     setFilterFn({
       fn: (items) => {
-        if (target.value == '') return items;
+        if (target.value === '') return items;
         else return items.filter((x) => x.username.toLowerCase().includes(target.value));
       }
     });

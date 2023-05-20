@@ -1,32 +1,19 @@
 import {
   Box,
-  Icon,
-  IconButton,
   styled,
   Paper,
   TableBody,
   TableRow,
   TableCell,
   Toolbar,
-  Table,
   TextField
 } from '@mui/material';
-import { Breadcrumb, SimpleCard } from 'app/components';
+import { SimpleCard } from 'app/components';
 import { useState } from 'react';
 import useTransferbalance from 'app/hooks/useTransferbalance';
 import useTable from '../material-kit/tables/hooks/useTable';
 import { useClasses } from '../material-kit/tables/hooks/useClasses';
 import { useEffect } from 'react';
-
-const StyledTable = styled(Table)(() => ({
-  whiteSpace: 'pre',
-  '& thead': {
-    '& tr': { '& th': { paddingLeft: 0, paddingRight: 0 } }
-  },
-  '& tbody': {
-    '& tr': { '& td': { paddingLeft: 0, textTransform: 'capitalize' } }
-  }
-}));
 
 const Container = styled('div')(({ theme }) => ({
   margin: '30px',
@@ -42,13 +29,11 @@ const Container = styled('div')(({ theme }) => ({
 }));
 
 const TransferBalance = () => {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const { getTransferbalances,points } = useTransferbalance();
+  const { getTransferbalances, points } = useTransferbalance();
 
   useEffect(() => {
-    console.log('Transfer balance Context calling');
     getTransferbalances();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const styles = (theme) => ({
@@ -67,9 +52,9 @@ const TransferBalance = () => {
     { id: 'id', label: 'Id' },
     { id: 'from_id', label: 'From Id' },
     { id: 'to_id', label: 'To Id' },
-	{ id: 'amount', label: 'Amount' },
-	{ id: 'last_balance', label: 'Last Balance' },
-	{ id: 'transfer_on', label: 'Transfer On' },
+    { id: 'amount', label: 'Amount' },
+    { id: 'last_balance', label: 'Last Balance' },
+    { id: 'transfer_on', label: 'Transfer On' },
     { id: 'actions', label: 'Actions' }
   ];
 
@@ -89,7 +74,7 @@ const TransferBalance = () => {
     let target = e.target;
     setFilterFn({
       fn: (items) => {
-        if (target.value == '') return items;
+        if (target.value === '') return items;
         else return items.filter((x) => x.id.toLowerCase().includes(target.value));
       }
     });
@@ -120,12 +105,12 @@ const TransferBalance = () => {
                   {recordsAfterPagingAndSorting &&
                     recordsAfterPagingAndSorting().map((item) => (
                       <TableRow key={item.id}>
-					    <TableCell>{item.id}</TableCell>
-					    <TableCell>{item.from_id}</TableCell>
+                        <TableCell>{item.id}</TableCell>
+                        <TableCell>{item.from_id}</TableCell>
                         <TableCell>{item.to_id}</TableCell>
                         <TableCell>{item.amount}</TableCell>
-						<TableCell>{item.last_balance}</TableCell>
-						<TableCell>{item.transfer_on}</TableCell>
+                        <TableCell>{item.last_balance}</TableCell>
+                        <TableCell>{item.transfer_on}</TableCell>
                         <TableCell></TableCell>
                       </TableRow>
                     ))}
