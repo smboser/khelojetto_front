@@ -20,6 +20,9 @@ const Analytics = Loadable(lazy(() => import('app/views/dashboard/Analytics')));
 
 const AppStockez = Loadable(lazy(() => import('app/views/stockez/AppStockez')));
 
+const AppSetpower = Loadable(lazy(() => import('app/views/setPower/AppSetpower')));
+const AppTransferbalance = Loadable(lazy(() => import('app/views/transferBalance/AppTransferbalance')));
+
 const routes = [
   {
     element: (
@@ -47,7 +50,19 @@ const routes = [
         path: '/users/stockez',
         element: <AppStockez />,
         auth: authRoles.admin
-      }
+      },
+	  
+	  {
+        path: '/setpowers/setPower',
+        element: <AppSetpower />,
+        auth: authRoles.admin
+      },
+	  
+	   {
+        path: '/points/transferBalance',
+        element: <AppTransferbalance />,
+        auth: authRoles.admin
+      },
     ]
   },
 
