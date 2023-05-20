@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 // import { LocalizationProvider } from '@mui/lab';
 import useUser from 'app/hooks/useUser';
 
@@ -40,12 +40,17 @@ const StockezEdit = () => {
   const { getUser, updateUser, users, contextMsg, contextStatus } = useUser();
   const [loading, setLoading] = useState(false);
   const { userId } = useParams();
+  const navigate = useNavigate();
 
   // Snackbar code
   const [open, setOpen] = useState(false);
   if (contextMsg && open === false && response === false) {
     setResponse(true);
     setOpen(true);
+    // Reloading data table
+    setTimeout(() => {
+      navigate('/users/stockez');
+    }, 2000);
   }
   const handleClose = (_, reason) => {
     if (reason === 'clickaway') {
@@ -73,7 +78,7 @@ const StockezEdit = () => {
 
   const handleSubmit = (event) => {
     setLoading(true);
-    setOpen(false); // Making off if it is on somehow
+    setOpen(false); // Making Snackbar off if it is on somehow
     setResponse(false); //
     try {
       // Adding usertype for Stockez

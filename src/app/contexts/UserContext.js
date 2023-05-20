@@ -9,7 +9,7 @@ const reducer = (state, action) => {
     }
 
     case 'DELETE_USER': {
-      return { ...state, users: action.payload };
+      return { ...state, ...action.payload };
     }
 
     case 'CREATE_USER': {
@@ -86,7 +86,7 @@ export const UserProvider = ({ children }) => {
 
   const createUser = async (user) => {
     try {
-      const res = await http.httpAll.post(`users/add`, { ...user });
+      await http.httpAll.post(`users/add`, { ...user });
       dispatch({
         type: 'CREATE_USER',
         payload: { contextStatus: 1, contextMsg: 'User created successfully.' }
@@ -102,7 +102,7 @@ export const UserProvider = ({ children }) => {
 
   const updateUser = async (user, userId) => {
     try {
-      const res = await http.httpAll.patch(`users/${userId}`, { ...user });
+      await http.httpAll.patch(`users/${userId}`, { ...user });
       dispatch({
         type: 'CREATE_USER',
         payload: { contextStatus: 1, contextMsg: 'User updated successfully.' }

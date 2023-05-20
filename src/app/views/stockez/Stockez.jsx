@@ -70,6 +70,10 @@ const Stockez = () => {
   if (contextMsg && open === false && response === false) {
     setResponse(true);
     setOpen(true);
+    // Reloading data table
+    setTimeout(() => {
+      getUsers(1);
+    }, 2000);
   }
   const handleClose = (_, reason) => {
     if (reason === 'clickaway') {
@@ -92,7 +96,8 @@ const Stockez = () => {
 
   const handleDelYes = () => {
     if (delUserId > 0) {
-      console.log('delUserId', delUserId);
+      setOpen(false); // Making Snackbar off if it is on somehow
+      setResponse(false); //
       deleteUser(delUserId);
     }
     setDelOpen(false);
