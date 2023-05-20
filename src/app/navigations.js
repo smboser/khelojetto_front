@@ -48,5 +48,16 @@ export const navigations = [
     name: 'Stockez',
     icon: 'people',
     path: '/users/stockez'
+  },
+  {
+    name: 'Setpower',
+    icon: 'people',
+    path: '/setpowers/setPower'
+  },
+  
+  {
+    name: 'Transferbalance',
+    icon: 'people',
+    path: '/points/transferBalance'
   }
 ];
