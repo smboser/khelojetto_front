@@ -1,7 +1,9 @@
 import { Box, styled } from '@mui/material';
 import { Breadcrumb } from 'app/components';
 import Stockez from './Stockez';
+import StockezAdd from './StockezAdd';
 import { UserProvider } from 'app/contexts/UserContext';
+import StockezEdit from './StockezEdit';
 
 const Container = styled('div')(({ theme }) => ({
   margin: '30px',
@@ -12,15 +14,18 @@ const Container = styled('div')(({ theme }) => ({
   }
 }));
 
-const AppStockez = () => {
+const AppStockez = (props) => {
+  console.log(props.action);
+  const displayApp = () => {
+    if (props?.action && props.action === 'add') {
+      return <StockezAdd />;
+    } else if (props?.action && props.action === 'edit') {
+      return <StockezEdit />;
+    } else return <Stockez />;
+  };
   return (
     <Container>
-      <Box className="breadcrumb">
-        <Breadcrumb routeSegments={[{ name: 'Stockez', path: '/stockez' }]} />
-        <UserProvider>
-          <Stockez />
-        </UserProvider>
-      </Box>
+      <UserProvider>{displayApp()}</UserProvider>
     </Container>
   );
 };

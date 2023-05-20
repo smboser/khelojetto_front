@@ -18,10 +18,19 @@ const AppEchart = Loadable(lazy(() => import('app/views/charts/echarts/AppEchart
 // dashboard page
 const Analytics = Loadable(lazy(() => import('app/views/dashboard/Analytics')));
 
+// Stockez pages
 const AppStockez = Loadable(lazy(() => import('app/views/stockez/AppStockez')));
 
+<<<<<<< HEAD
 const AppSetpower = Loadable(lazy(() => import('app/views/setPower/AppSetpower')));
 const AppTransferbalance = Loadable(lazy(() => import('app/views/transferBalance/AppTransferbalance')));
+=======
+const hocComponent = (WrappedComponent) => {
+  return (props) => <WrappedComponent {...props} />;
+};
+
+const StockezComponent = hocComponent(AppStockez);
+>>>>>>> 3d602532b57b2c20dcf30958a93c1eb6c463fb64
 
 const routes = [
   {
@@ -48,7 +57,17 @@ const routes = [
 
       {
         path: '/users/stockez',
-        element: <AppStockez />,
+        element: <StockezComponent action="list" />,
+        auth: authRoles.admin
+      },
+      {
+        path: '/users/stockez/add',
+        element: <StockezComponent action="add" />,
+        auth: authRoles.admin
+      },
+      {
+        path: '/users/stockez/edit/:userId',
+        element: <StockezComponent action="edit" />,
         auth: authRoles.admin
       },
 	  
