@@ -8,7 +8,6 @@ import '../fake-db';
 
 const App = () => {
   const content = useRoutes(routes);
-  console.log('In App.jsx');
 
   return (
     <SettingsProvider>

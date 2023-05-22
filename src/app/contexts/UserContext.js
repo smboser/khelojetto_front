@@ -33,7 +33,6 @@ export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, []);
 
   const deleteUser = async (userId) => {
-    console.log('Here at delete');
     try {
       const res = await http.httpAll.delete(`users/${userId}`);
       if (res?.data?.deleted === true)
@@ -67,7 +66,6 @@ export const UserProvider = ({ children }) => {
   const getUsers = async (typeId) => {
     try {
       const res = await http.httpAll.get(`users/type/${typeId}`);
-      console.log('res', res.data);
       dispatch({ type: 'LOAD_USERS', payload: res.data });
     } catch (e) {
       console.error(e);
@@ -77,7 +75,6 @@ export const UserProvider = ({ children }) => {
   const getUser = async (userId) => {
     try {
       const res = await http.httpAll.get(`users/${userId}`);
-      console.log('res', res.data);
       dispatch({ type: 'LOAD_USERS', payload: res.data });
     } catch (e) {
       console.error(e);
@@ -115,11 +112,6 @@ export const UserProvider = ({ children }) => {
       console.error(e);
     }
   };
-
-  // useEffect(() => {
-  //   console.log('User Context calling');
-  //   getStockez(1);
-  // }, []);
 
   return (
     <UserContext.Provider

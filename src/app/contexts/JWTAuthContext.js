@@ -85,6 +85,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    authServices.logout();
     dispatch({ type: 'LOGOUT' });
   };
 

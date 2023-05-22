@@ -20,7 +20,6 @@ const httpFormData = axios.create({
 httpAll.interceptors.request.use(
   (req) => {
     const authTokenPayload = authService.getToken();
-    console.log('authTokenPayload', authTokenPayload);
     if (authTokenPayload) {
       req.headers['Authorization'] = `Bearer ${authTokenPayload}`;
     }

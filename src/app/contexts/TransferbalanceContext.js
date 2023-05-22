@@ -24,7 +24,7 @@ const reducer = (state, action) => {
 const TransferbalanceContext = createContext({
   points: [],
   //deleteSetpower: () => {},
- // clearSetpower: () => {},
+  // clearSetpower: () => {},
   getTransferbalances: () => {}
   //createSetpower: () => {}
 });
@@ -53,26 +53,11 @@ export const TransferbalanceProvider = ({ children }) => {
   const getTransferbalances = async () => {
     try {
       const res = await http.httpAll.get(`points`);
-      console.log('res', res.data);
       dispatch({ type: 'LOAD_TRANSFERBALANCE', payload: res.data });
     } catch (e) {
       console.error(e);
     }
   };
-
- /*  const createUser = async (notification) => {
-    try {
-      const res = await axios.post('/api/notification/add', { notification });
-      dispatch({ type: 'CREATE_USER', payload: res.data });
-    } catch (e) {
-      console.error(e);
-    }
-  }; */
-
-  // useEffect(() => {
-  //   console.log('User Context calling');
-  //   getStockez(1);
-  // }, []);
 
   return (
     <TransferbalanceContext.Provider

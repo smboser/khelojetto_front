@@ -50,8 +50,8 @@ const routes = [
       // e-chart rooute
       {
         path: '/charts/echarts',
-        element: <AppEchart />,
-        auth: authRoles.editor
+        element: <AppEchart auth="abdc" />,
+        customA: authRoles.sa
       },
 
       {

@@ -72,7 +72,6 @@ const StockezEdit = () => {
     if (userId) getUser(userId);
     if (users && typeof users === 'object' && !Array.isArray(users)) {
       setState({ ...state, ...users });
-      console.log('state', state);
     }
   }, [!users || (users && Array.isArray(users))]);
 
