@@ -3,5 +3,6 @@ export const authRoles = {
   stockez: [1], // Only stockez
   agent: [2], // Only agent
   player: [3], // only player,
-  saStockez: [0, 1]
+  saStockez: [0, 1],
+  all: [0, 1, 2, 3]
 };

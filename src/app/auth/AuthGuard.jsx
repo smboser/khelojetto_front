@@ -1,21 +1,23 @@
 import useAuth from 'app/hooks/useAuth';
 import { Navigate, useLocation } from 'react-router-dom';
-import { authRoles } from './authRoles';
+import { navigations } from 'app/navigations';
 
 const AuthGuard = ({ children }) => {
   const { isAuthenticated, user } = useAuth();
   const { pathname } = useLocation();
 
-  const roleMatrix = [
-    { path: 'dashboard/default', role: authRoles.sa },
-    { path: '/users/stockez', role: authRoles.sa },
-    { path: '/setpowers/setPower', role: authRoles.sa }
-  ];
-
   let hasAccess = false;
-  roleMatrix.forEach((m) => {
-    if (pathname.indexOf(m.path) > -1 && m.role.indexOf(user?.user_type) > -1) {
-      hasAccess = true;
+  navigations.forEach((nav) => {
+    if (nav.children) {
+      nav.children.forEach((m) => {
+        if (pathname.indexOf(m.path) > -1 && m.role.indexOf(user?.user_type) > -1) {
+          hasAccess = true;
+        }
+      });
+    } else {
+      if (pathname.indexOf(nav.path) > -1 && nav.role.indexOf(user?.user_type) > -1) {
+        hasAccess = true;
+      }
     }
   });
 

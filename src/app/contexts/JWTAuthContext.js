@@ -70,7 +70,6 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     // const response = await axios.post('/api/auth/login', { email, password });
     const response = await http.httpAll.post('auth', { email, password });
-    console.log('response.data', response.data);
     const user = jwtDecode(response.data.access_token);
     // Storing localStorage
     authServices.saveToken(response.data.access_token);
