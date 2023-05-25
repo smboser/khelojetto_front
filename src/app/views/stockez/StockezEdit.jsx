@@ -94,49 +94,75 @@ const StockezEdit = () => {
       setLoading(false);
     }
   };
-  
+
   const [checked, setChecked] = useState(false);
-   let inputVal=0;
-  let inputValx=false;
+  let inputVal = 0;
+  let inputValx = false;
   const handleChange1 = (event) => {
     setChecked(event.target.checked);
-	inputValx=event.target.checked;
-	if(inputValx===true){
-		
-	inputVal=1;	
-	setState({ ...state, [event.target.name]: inputVal });
-	}
-	else{
-		inputVal=0;	
-		if(event.target.name==="update_agents_revenue"){
-			
-		setState({ ...state,'joker_a':0,'tripple_a':0,'single_a':0,'double_a':0, [event.target.name]: inputVal });	
-		}
-		
-		if(event.target.name==="update_player_revenue"){
-			
-		setState({ ...state,'joker_p':0,'tripple_p':0,'single_p':0,'double_p':0, [event.target.name]: inputVal });	
-		}
-		
-	}
-	
+    inputValx = event.target.checked;
+    if (inputValx === true) {
+      inputVal = 1;
+      setState({ ...state, [event.target.name]: inputVal });
+    } else {
+      inputVal = 0;
+      if (event.target.name === 'update_agents_revenue') {
+        setState({
+          ...state,
+          joker_a: 0,
+          tripple_a: 0,
+          single_a: 0,
+          double_a: 0,
+          [event.target.name]: inputVal
+        });
+      }
+
+      if (event.target.name === 'update_player_revenue') {
+        setState({
+          ...state,
+          joker_p: 0,
+          tripple_p: 0,
+          single_p: 0,
+          double_p: 0,
+          [event.target.name]: inputVal
+        });
+      }
+    }
   };
-  
-  
 
   const handleChange = (event) => {
     event.persist();
     setState({ ...state, [event.target.name]: event.target.value });
   };
-  
+
   const handleInput = (event) => {
     const inputVal = event.target.value;
     const inputName = event.target.name;
-   setState({ ...state, [inputName]: inputVal });
+    setState({ ...state, [inputName]: inputVal });
     // frmData.append(inputName, inputVal)
   };
 
-  const { username, name, mobile, password, confirmPassword, user_status, email,revenue,type,joker_a,tripple_a,single_a,double_a,joker_p,tripple_p,single_p,double_p,update_player_revenue,update_agents_revenue } = state;
+  const {
+    username,
+    name,
+    mobile,
+    password,
+    confirmPassword,
+    user_status,
+    email,
+    revenue,
+    type,
+    joker_a,
+    tripple_a,
+    single_a,
+    double_a,
+    joker_p,
+    tripple_p,
+    single_p,
+    double_p,
+    update_player_revenue,
+    update_agents_revenue
+  } = state;
   return (
     <Container>
       <Box className="breadcrumb">
@@ -192,7 +218,7 @@ const StockezEdit = () => {
                         validators={['required', 'isEmail']}
                         errorMessages={['this field is required', 'email is not valid']}
                       />
-					   <TextField
+                      <TextField
                         type="text"
                         name="revenue"
                         label="Revenue(%)"
@@ -201,79 +227,70 @@ const StockezEdit = () => {
                         validators={['required']}
                         errorMessages={['this field is required']}
                       />
-					  
-					   <InputLabel id="demo-simple-select-label">
-                  {" "}
-                   Type
-                </InputLabel>
-                <Select
-                  id="type"
-                  onChange={handleInput}
-                  name="type"
-                  value={type || ''}
-                  fullWidth
-                  variant="outlined"
-                >
-                 <MenuItem value={'TN'}>
-                      {'TN'}
-                    </MenuItem>
-                </Select>
-					  
-					 
-					  <FormControlLabel
-              control={<Checkbox
 
-                  checked={update_agents_revenue?true:false}
-                onChange={handleChange1}
-                name="update_agents_revenue"
-				
-			  />}
-              label="Update Agents Revenue "
-            />
-			
-			<TextField
+                      <InputLabel id="demo-simple-select-label"> Type</InputLabel>
+                      <Select
+                        id="type"
+                        onChange={handleInput}
+                        name="type"
+                        value={type || ''}
+                        fullWidth
+                        variant="outlined"
+                      >
+                        <MenuItem value={'TN'}>{'TN'}</MenuItem>
+                      </Select>
+
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={update_agents_revenue ? true : false}
+                            onChange={handleChange1}
+                            name="update_agents_revenue"
+                          />
+                        }
+                        label="Update Agents Revenue "
+                      />
+
+                      <TextField
                         type="text"
                         name="joker_a"
                         label="Revenue Jeeto Joker(%)"
                         onChange={handleChange}
                         value={joker_a || ''}
-						disabled={update_agents_revenue?false:true}
+                        disabled={update_agents_revenue ? false : true}
                         validators={[]}
                         errorMessages={['this field is required']}
                       />
-					  
-					  
-					  <TextField
+
+                      <TextField
                         type="text"
                         name="tripple_a"
                         label="Revenue Tripple Chance P(%)"
                         onChange={handleChange}
                         value={tripple_a || ''}
-						disabled={update_agents_revenue?false:true}
+                        disabled={update_agents_revenue ? false : true}
                         validators={[]}
                         errorMessages={['this field is required']}
                       />
-					  
-					  <TextField
+
+                      <TextField
                         type="text"
                         name="single_a"
                         label="Revenue Single Chance P(%)"
                         onChange={handleChange}
                         value={single_a || ''}
-						disabled={update_agents_revenue?false:true}
+                        disabled={update_agents_revenue ? false : true}
                         validators={[]}
                         errorMessages={['this field is required']}
                       />
-					  
-					  
-					  
-					  <TextField
+
+                      <TextField
                         type="text"
                         name="double_a"
                         label="Revenue Double Chance P(%)"
                         onChange={handleChange}
                         value={double_a || ''}
-						disabled={update_agents_revenue?false:true}
+                        disabled={update_agents_revenue ? false : true}
                         validators={[]}
                         errorMessages={['this field is required']}
                       />
@@ -327,62 +344,59 @@ const StockezEdit = () => {
                           control={<Radio color="secondary" />}
                         />
                       </RadioGroup>
-					  <FormControlLabel
-              control={<Checkbox 
-			  
-			 checked={update_player_revenue?true:false}
-                onChange={handleChange1}
-                name="update_player_revenue"
-			    
-			  />}
-              label="Update Player Revenue "
-            />
-			
-			<TextField
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={update_player_revenue ? true : false}
+                            onChange={handleChange1}
+                            name="update_player_revenue"
+                          />
+                        }
+                        label="Update Player Revenue "
+                      />
+
+                      <TextField
                         type="text"
                         name="joker_p"
                         label="Revenue Jeeto Joker(%)"
                         onChange={handleChange}
                         value={joker_p || ''}
-						disabled={update_player_revenue?false:true}
+                        disabled={update_player_revenue ? false : true}
                         validators={[]}
                         errorMessages={['this field is required']}
                       />
-					  
-					  
-					  <TextField
+
+                      <TextField
                         type="text"
                         name="tripple_p"
                         label="Revenue Tripple Chance P(%)"
                         onChange={handleChange}
                         value={tripple_p || ''}
-						disabled={update_player_revenue?false:true}
-                       validators={[]}
+                        disabled={update_player_revenue ? false : true}
+                        validators={[]}
                         errorMessages={['this field is required']}
                       />
-					  
-					  <TextField
+
+                      <TextField
                         type="text"
                         name="single_p"
                         label="Revenue Single Chance P(%)"
                         onChange={handleChange}
                         value={single_p || ''}
-						disabled={update_player_revenue?false:true}
+                        disabled={update_player_revenue ? false : true}
                         validators={[]}
                         errorMessages={['this field is required']}
                       />
-					  
-					  
-					  
-					  <TextField
+
+                      <TextField
                         type="text"
                         name="double_p"
                         label="Revenue Double Chance P(%)"
                         onChange={handleChange}
                         value={double_p || ''}
-						disabled={update_player_revenue?false:true}
-                       validators={[]}
-                       errorMessages={['this field is required']}
+                        disabled={update_player_revenue ? false : true}
+                        validators={[]}
+                        errorMessages={['this field is required']}
                       />
                     </Grid>
                   </Grid>
