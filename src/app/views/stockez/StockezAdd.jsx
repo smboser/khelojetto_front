@@ -101,15 +101,25 @@ const StockezAdd = () => {
   const handleChange1 = (event) => {
     setChecked(event.target.checked);
 	inputValx=event.target.checked;
-	if(inputValx==true){
+	if(inputValx===true){
 		
 	inputVal=1;	
+	setState({ ...state, [event.target.name]: inputVal });
 	}
 	else{
 		inputVal=0;	
+		if(event.target.name==="update_agents_revenue"){
+			
+		setState({ ...state,'joker_a':0,'tripple_a':0,'single_a':0,'double_a':0, [event.target.name]: inputVal });	
+		}
+		
+		if(event.target.name==="update_player_revenue"){
+			
+		setState({ ...state,'joker_p':0,'tripple_p':0,'single_p':0,'double_p':0, [event.target.name]: inputVal });	
+		}
 		
 	}
-	setState({ ...state, [event.target.name]: inputVal });
+	
   };
   
   const [checked1, setChecked1] = useState(false);
@@ -368,7 +378,7 @@ const StockezAdd = () => {
               control={<Checkbox 
 			  
 			    checked={update_player_revenue}
-                onChange={handleChange2}
+                onChange={handleChange1}
                 name="update_player_revenue"
 			    
 			  />}
