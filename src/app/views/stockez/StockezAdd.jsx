@@ -1,7 +1,6 @@
 import {
   Box,
   Stack,
-  Button,
   FormControlLabel,
   Grid,
   Icon,
@@ -15,6 +14,7 @@ import {
   MenuItem,
   Checkbox
 } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 
 import { useEffect, useState } from 'react';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
@@ -43,18 +43,9 @@ const TextField = styled(TextValidator)(() => ({
 const StockezAdd = () => {
   const [state, setState] = useState({ date: new Date() });
   const [response, setResponse] = useState(false); // For api response
-  const { getUsers, deleteUser, createUser, users, contextMsg, contextStatus } = useUser();
+  const { createUser, contextMsg, contextStatus } = useUser();
   const [loading, setLoading] = useState(false);
 
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  function handleClick(event) {
-    setAnchorEl(event.currentTarget);
-  }
-
-  /* function handleClose() {
-    setAnchorEl(null);
-  } */
   // Snackbar code
   const [open, setOpen] = useState(false);
   if (contextMsg && open === false && response === false) {
@@ -91,11 +82,9 @@ const StockezAdd = () => {
     }
   };
 
-  const [checked, setChecked] = useState(false);
   let inputVal = 0;
   let inputValx = false;
   const handleChange1 = (event) => {
-    setChecked(event.target.checked);
     inputValx = event.target.checked;
     if (inputValx === true) {
       inputVal = 1;
@@ -124,20 +113,6 @@ const StockezAdd = () => {
         });
       }
     }
-  };
-
-  const [checked1, setChecked1] = useState(false);
-  let inputVala = 0;
-  let inputValb = false;
-  const handleChange2 = (event) => {
-    setChecked1(event.target.checked);
-    inputValb = event.target.checked;
-    if (inputValb == true) {
-      inputVala = 1;
-    } else {
-      inputVala = 0;
-    }
-    setState({ ...state, [event.target.name]: inputVala });
   };
 
   const handleChange = (event) => {
@@ -442,10 +417,15 @@ const StockezAdd = () => {
                     </Grid>
                   </Grid>
 
-                  <Button color="primary" variant="contained" type="submit">
+                  <LoadingButton
+                    color="primary"
+                    variant="contained"
+                    type="submit"
+                    loading={loading}
+                  >
                     <Icon>send</Icon>
                     <Span sx={{ pl: 1, textTransform: 'capitalize' }}>Submit</Span>
-                  </Button>
+                  </LoadingButton>
                 </ValidatorForm>
               </div>
             </SimpleCard>

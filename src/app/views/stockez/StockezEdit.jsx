@@ -1,7 +1,6 @@
 import {
   Box,
   Stack,
-  Button,
   FormControlLabel,
   Grid,
   Icon,
@@ -12,11 +11,10 @@ import {
   Snackbar,
   Select,
   MenuItem,
-  FormHelperText,
-  FormControl,
   InputLabel,
   Checkbox
 } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import { useEffect, useState } from 'react';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -72,6 +70,7 @@ const StockezEdit = () => {
       return true;
     });
     return () => ValidatorForm.removeValidationRule('isPasswordMatch');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.password]);
 
   useEffect(() => {
@@ -79,6 +78,7 @@ const StockezEdit = () => {
     if (users && typeof users === 'object' && !Array.isArray(users)) {
       setState({ ...state, ...users });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [!users || (users && Array.isArray(users))]);
 
   const handleSubmit = (event) => {
@@ -95,11 +95,9 @@ const StockezEdit = () => {
     }
   };
 
-  const [checked, setChecked] = useState(false);
   let inputVal = 0;
   let inputValx = false;
   const handleChange1 = (event) => {
-    setChecked(event.target.checked);
     inputValx = event.target.checked;
     if (inputValx === true) {
       inputVal = 1;
@@ -400,10 +398,15 @@ const StockezEdit = () => {
                       />
                     </Grid>
                   </Grid>
-                  <Button color="primary" variant="contained" type="submit">
+                  <LoadingButton
+                    color="primary"
+                    variant="contained"
+                    type="submit"
+                    loading={loading}
+                  >
                     <Icon>send</Icon>
                     <Span sx={{ pl: 1, textTransform: 'capitalize' }}>Update</Span>
-                  </Button>
+                  </LoadingButton>
                 </ValidatorForm>
               </div>
             </SimpleCard>
