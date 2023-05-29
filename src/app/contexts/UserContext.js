@@ -8,6 +8,11 @@ const reducer = (state, action) => {
       return { ...state, users: action.payload, contextStatus: null, contextMsg: null };
     }
 
+
+    case 'LOAD_AGENTS': {
+      return { ...state, agents: action.payload, contextStatus: null, contextMsg: null };
+    }
+
     case 'DELETE_USER': {
       return { ...state, ...action.payload };
     }
@@ -26,6 +31,8 @@ const UserContext = createContext({
   deleteUser: () => {},
   clearUsers: () => {},
   getUsers: () => {},
+  getUser: () => {},
+  getAgents: () => {},
   createUser: () => {}
 });
 
@@ -69,6 +76,16 @@ export const UserProvider = ({ children }) => {
       const res = await http.httpAll.get(`users/type/${typeId}`);
       console.log('res', res.data);
       dispatch({ type: 'LOAD_USERS', payload: res.data });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  
+  const getAgents = async (stokesId) => {
+    try {
+      const res = await http.httpAll.get(`users/stokes/${stokesId}`);
+      console.log('res', res.data);
+      dispatch({ type: 'LOAD_AGENTS', payload: res.data });
     } catch (e) {
       console.error(e);
     }
@@ -126,11 +143,13 @@ export const UserProvider = ({ children }) => {
       value={{
         getUsers,
         getUser,
+        getAgents,
         deleteUser,
         clearUsers,
         createUser,
         updateUser,
         users: state.users,
+		    agents: state.agents,
         contextMsg: state.contextMsg,
         contextStatus: state.contextStatus
       }}
