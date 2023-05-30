@@ -21,6 +21,10 @@ const Analytics = Loadable(lazy(() => import('app/views/dashboard/Analytics')));
 // Stockez pages
 const AppStockez = Loadable(lazy(() => import('app/views/stockez/AppStockez')));
 
+const AppAgent = Loadable(lazy(() => import('app/views/agent/AppAgent')));
+
+const AppPlayer = Loadable(lazy(() => import('app/views/player/AppPlayer')));
+
 const AppSetpower = Loadable(lazy(() => import('app/views/setPower/AppSetpower')));
 const AppTransferbalance = Loadable(
   lazy(() => import('app/views/transferBalance/AppTransferbalance'))
@@ -30,6 +34,8 @@ const hocComponent = (WrappedComponent) => {
 };
 
 const StockezComponent = hocComponent(AppStockez);
+const AgentComponent = hocComponent(AppAgent);
+const PlayerComponent = hocComponent(AppPlayer);
 
 const routes = [
   {
@@ -69,7 +75,39 @@ const routes = [
         element: <StockezComponent action="edit" />,
         auth: authRoles.admin
       },
+	  {
+        path: '/users/agent',
+        element: <AgentComponent action="list" />,
+        auth: authRoles.admin
+      },
+      {
+        path: '/users/agent/add',
+        element: <AgentComponent action="add" />,
+        auth: authRoles.admin
+      },
+      {
+        path: '/users/agent/edit/:userId',
+        element: <AgentComponent action="edit" />,
+        auth: authRoles.admin
+      },
+	  
+	  {
+        path: '/users/player',
+        element: <PlayerComponent action="list" />,
+        auth: authRoles.admin
+      },
 
+	    {
+        path: '/users/player/add',
+        element: <PlayerComponent action="add" />,
+        auth: authRoles.admin
+      },
+      
+      {
+        path: '/users/player/edit/:userId/:stoId',
+        element: <PlayerComponent action="edit" />,
+        auth: authRoles.admin
+      },
       {
         path: '/setpowers/setPower',
         element: <AppSetpower />,

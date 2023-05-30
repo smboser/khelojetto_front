@@ -67,6 +67,16 @@ export const navigations = [
     path: '/users/stockez'
   },
   {
+    name: 'Agent',
+    icon: 'people',
+    path: '/users/agent'
+  },
+  {
+    name: 'Player',
+    icon: 'people',
+    path: '/users/player'
+  },
+  {
     name: 'Setpower',
     icon: 'people',
     role: authRoles.saStockez,
