@@ -10,10 +10,9 @@ import {
   styled,
   Alert,
   Snackbar,
-   Select,
+  Select,
   InputLabel,
   MenuItem
-  
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
@@ -41,12 +40,12 @@ const TextField = styled(TextValidator)(() => ({
 const PlayerEdit = () => {
   const [state, setState] = useState({});
   const [response, setResponse] = useState(false); // For api response
-  const {getUsers,getAgents, getUser, updateUser, users, contextMsg, contextStatus,agents } = useUser();
-  const [loading, setLoading] = useState(false);
+  const { getUsers, getAgents, getUser, updateUser, users, contextMsg, contextStatus, agents } =
+    useUser();
   const { userId } = useParams();
   const { stoId } = useParams();
   const navigate = useNavigate();
-   const [stokesdetails, setStokesdetails] = useState([]);
+  const [stokesdetails, setStokesdetails] = useState([]);
   // Snackbar code
   const [open, setOpen] = useState(false);
   if (contextMsg && open === false && response === false) {
@@ -71,75 +70,57 @@ const PlayerEdit = () => {
       return true;
     });
     return () => ValidatorForm.removeValidationRule('isPasswordMatch');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.password]);
 
   useEffect(() => {
     if (userId) getUser(userId);
-	if (stoId) getAgents(stoId);
+    if (stoId) getAgents(stoId);
     if (users && typeof users === 'object' && !Array.isArray(users)) {
       setState({ ...state, ...users });
     }
-	
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [!users || (users && Array.isArray(users))]);
-  
-  console.log("dfghm=", state);
-  
-   useEffect(() => {
-     getUsers(1);
+
+  console.log('dfghm=', state);
+
+  useEffect(() => {
+    getUsers(1);
     if (users && typeof users === 'object' && Array.isArray(users)) {
       setStokesdetails(users);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [!users || (users && !Array.isArray(users))]);
 
   const handleSubmit = (event) => {
-    setLoading(true);
     setOpen(false); // Making Snackbar off if it is on somehow
     setResponse(false); //
     try {
       // Adding usertype for Stockez
       updateUser(state, userId);
-      setLoading(false);
-      //navigate('/');
     } catch (e) {
-      setLoading(false);
+      console.log(e);
     }
   };
-  
+
   const handleInput = (event) => {
     const inputVal = event.target.value;
     const inputName = event.target.name;
     setState({
       ...state,
       [inputName]: inputVal
-      
     });
-    getAgents(inputVal); 
-	
+    getAgents(inputVal);
   };
-  
-  
-   
-
 
   const handleChange = (event) => {
-    
     setState({ ...state, [event.target.name]: event.target.value });
   };
 
-  const { username, name, mobile, password, confirmPassword, user_status, email,type,sto_id,ag_id} = state;
-  if(ag_id) console.log("buttonm=",agents);
-  
-    // useEffect(() => {
-     // console.log("bhalobasa",sto_id);
-     // getAgents(sto_id);
-    // if (agents && typeof agents === 'object' && Array.isArray(agents)) {
-     // setState({ ...state, ...agents });
-    // }
-  // }, [!agents || (agents && !Array.isArray(agents))]);
-  
+  const { username, name, mobile, password, confirmPassword, user_status, email, sto_id, ag_id } =
+    state;
+
   return (
-  
-      
     <Container>
       <Box className="breadcrumb">
         <Breadcrumb
@@ -194,41 +175,39 @@ const PlayerEdit = () => {
                         validators={['required', 'isEmail']}
                         errorMessages={['this field is required', 'email is not valid']}
                       />
-					   <InputLabel id="demo-simple-select-label">
-                  {" "}
-                  Stokes
-                </InputLabel>
-					  
-					  <Select
-                  id="stokes"
-                  onChange={handleInput}
-                  name="sto_id"
-                  value={sto_id || ""}
-                  fullWidth
-                  variant="outlined"
-                >
-				 {stokesdetails && stokesdetails.map((item, index) => (
-                    <MenuItem key={index} value={item.user_id}>
-                      {item.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-					  
-                <Select
-                  id="agent"
-                  onChange={handleChange}
-                  name="ag_id"
-                  value={ag_id || ""}
-                  fullWidth
-                  variant="outlined"
-                >
-				 {agents && agents.map((item, index) => (
-                    <MenuItem key={index} value={item.user_id}>
-                      {item.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-				 
+                      <InputLabel id="demo-simple-select-label"> Stokes</InputLabel>
+
+                      <Select
+                        id="stokes"
+                        onChange={handleInput}
+                        name="sto_id"
+                        value={sto_id || ''}
+                        fullWidth
+                        variant="outlined"
+                      >
+                        {stokesdetails &&
+                          stokesdetails.map((item, index) => (
+                            <MenuItem key={index} value={item.user_id}>
+                              {item.name}
+                            </MenuItem>
+                          ))}
+                      </Select>
+
+                      <Select
+                        id="agent"
+                        onChange={handleChange}
+                        name="ag_id"
+                        value={ag_id || ''}
+                        fullWidth
+                        variant="outlined"
+                      >
+                        {agents &&
+                          agents.map((item, index) => (
+                            <MenuItem key={index} value={item.user_id}>
+                              {item.name}
+                            </MenuItem>
+                          ))}
+                      </Select>
                     </Grid>
                     <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                       <TextField
@@ -279,9 +258,6 @@ const PlayerEdit = () => {
                           control={<Radio color="secondary" />}
                         />
                       </RadioGroup>
-					 
-					  
-					  
                     </Grid>
                   </Grid>
                   <Button color="primary" variant="contained" type="submit">

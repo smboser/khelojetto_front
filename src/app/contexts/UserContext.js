@@ -8,7 +8,6 @@ const reducer = (state, action) => {
       return { ...state, users: action.payload, contextStatus: null, contextMsg: null };
     }
 
-
     case 'LOAD_AGENTS': {
       return { ...state, agents: action.payload, contextStatus: null, contextMsg: null };
     }
@@ -78,7 +77,7 @@ export const UserProvider = ({ children }) => {
       console.error(e);
     }
   };
-  
+
   const getAgents = async (stokesId) => {
     try {
       const res = await http.httpAll.get(`users/stokes/${stokesId}`);
@@ -141,7 +140,7 @@ export const UserProvider = ({ children }) => {
         createUser,
         updateUser,
         users: state.users,
-		    agents: state.agents,
+        agents: state.agents,
         contextMsg: state.contextMsg,
         contextStatus: state.contextStatus
       }}

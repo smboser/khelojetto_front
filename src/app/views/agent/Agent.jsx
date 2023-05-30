@@ -181,9 +181,9 @@ const Agent = () => {
                         onChange={handleSearch}
                       />
                       <NavLink to="/users/agent/add" style={{ color: palette.primary.main }}>
-                       <Fab size="medium" color="primary" aria-label="Add" className="button">
-                        <Icon>add</Icon>
-                       </Fab>
+                        <Fab size="medium" color="primary" aria-label="Add" className="button">
+                          <Icon>add</Icon>
+                        </Fab>
                       </NavLink>
                     </Box>
                   </Toolbar>

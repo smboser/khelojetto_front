@@ -69,23 +69,25 @@ export const navigations = [
   {
     name: 'Agent',
     icon: 'people',
+    role: authRoles.sa,
     path: '/users/agent'
   },
   {
     name: 'Player',
     icon: 'people',
+    role: authRoles.sa,
     path: '/users/player'
   },
   {
-    name: 'Setpower',
-    icon: 'people',
+    name: 'Set Power',
+    icon: 'blur_linear',
     role: authRoles.saStockez,
     path: '/setpowers/setPower'
   },
 
   {
-    name: 'Transferbalance',
-    icon: 'people',
+    name: 'Point Transfer',
+    icon: 'cached',
     role: authRoles.saStockez,
     path: '/points/transferBalance'
   }
