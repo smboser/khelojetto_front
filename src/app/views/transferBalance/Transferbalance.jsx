@@ -1,19 +1,34 @@
 import {
   Box,
+  Icon,
+  Fab,
   styled,
   Paper,
   TableBody,
   TableRow,
   TableCell,
   Toolbar,
-  TextField
+  TextField,
+  useTheme,
+  IconButton,
+  Button,
+  Alert,
+  Snackbar
 } from '@mui/material';
-import { SimpleCard } from 'app/components';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import { Breadcrumb, SimpleCard } from 'app/components';
 import { useState } from 'react';
 import useTransferbalance from 'app/hooks/useTransferbalance';
 import useTable from '../material-kit/tables/hooks/useTable';
 import { useClasses } from '../material-kit/tables/hooks/useClasses';
 import { useEffect } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+
+
 
 const Container = styled('div')(({ theme }) => ({
   margin: '30px',
@@ -30,6 +45,8 @@ const Container = styled('div')(({ theme }) => ({
 
 const TransferBalance = () => {
   const { getTransferbalances, points } = useTransferbalance();
+   const { palette } = useTheme();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getTransferbalances();
@@ -92,12 +109,26 @@ const TransferBalance = () => {
             <Paper>
               {/* <EmployeeForm /> */}
               <Toolbar>
+			  <Box
+                      component="span"
+                      m={1}
+                      display="flex"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      sx={{ width: '100%' }}
+                    >
                 <TextField
                   variant="outlined"
                   label="Search Point"
                   className={classes.searchInput}
                   onChange={handleSearch}
                 />
+				<NavLink to="/points/transferBalance/add" style={{ color: palette.primary.main }}>
+                       <Fab size="medium" color="primary" aria-label="Add" className="button">
+                        <Icon>add</Icon>
+                       </Fab>
+                      </NavLink>
+					   </Box>
               </Toolbar>
               <TblContainer>
                 <TblHead />

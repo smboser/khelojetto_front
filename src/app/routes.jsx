@@ -36,6 +36,7 @@ const hocComponent = (WrappedComponent) => {
 const StockezComponent = hocComponent(AppStockez);
 const AgentComponent = hocComponent(AppAgent);
 const PlayerComponent = hocComponent(AppPlayer);
+const TransferbalanceComponent = hocComponent(AppTransferbalance);
 
 const routes = [
   {
@@ -117,6 +118,11 @@ const routes = [
       {
         path: '/points/transferBalance',
         element: <AppTransferbalance />,
+        auth: authRoles.admin
+      },
+	   {
+        path: '/points/transferBalance/add',
+        element: <TransferbalanceComponent action="add" />,
         auth: authRoles.admin
       }
     ]

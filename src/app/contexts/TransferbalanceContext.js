@@ -15,6 +15,10 @@ const reducer = (state, action) => {
     case 'CLEAR_TRANSFERBALANCE': {
       return { ...state, points: action.payload };
     }
+	
+	case 'CREATE_TRANSFERBALANCE': {
+      return { ...state, ...action.payload };
+    }
 
     default:
       return state;
@@ -60,14 +64,21 @@ export const TransferbalanceProvider = ({ children }) => {
     }
   };
 
- /*  const createUser = async (notification) => {
+   const createTransferbalance = async (point) => {
     try {
-      const res = await axios.post('/api/notification/add', { notification });
-      dispatch({ type: 'CREATE_USER', payload: res.data });
+      await http.httpAll.post(`points/add`, { ...point });
+      dispatch({
+        type: 'CREATE_TRANSFERBALANCE',
+        payload: { contextStatus: 1, contextMsg: 'Transfer Balance created successfully.' }
+      });
     } catch (e) {
+      dispatch({
+        type: 'CREATE_TRANSFERBALANCE',
+        payload: { contextStatus: 0, contextMsg: 'Error! Please try later.' }
+      });
       console.error(e);
     }
-  }; */
+  };
 
   // useEffect(() => {
   //   console.log('User Context calling');
@@ -78,7 +89,8 @@ export const TransferbalanceProvider = ({ children }) => {
     <TransferbalanceContext.Provider
       value={{
         getTransferbalances,
-        points: state.points
+        points: state.points,
+		createTransferbalance
       }}
     >
       {children}
