@@ -7,17 +7,16 @@ const reducer = (state, action) => {
     case 'LOAD_USERS': {
       return { ...state, users: action.payload, contextStatus: null, contextMsg: null };
     }
-	
-	 case 'LOAD_ALLUSERS': {
+
+    case 'LOAD_ALLUSERS': {
       return { ...state, users: action.payload, contextStatus: null, contextMsg: null };
     }
-
 
     case 'LOAD_AGENTS': {
       return { ...state, agents: action.payload, contextStatus: null, contextMsg: null };
     }
-	
-	case 'LOAD_BALANCE': {
+
+    case 'LOAD_BALANCE': {
       return { ...state, balances: action.payload, contextStatus: null, contextMsg: null };
     }
 
@@ -49,7 +48,6 @@ export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, []);
 
   const deleteUser = async (userId) => {
-    console.log('Here at delete');
     try {
       const res = await http.httpAll.delete(`users/${userId}`);
       if (res?.data?.deleted === true)
@@ -83,14 +81,12 @@ export const UserProvider = ({ children }) => {
   const getUsers = async (typeId) => {
     try {
       const res = await http.httpAll.get(`users/type/${typeId}`);
-      console.log('res', res.data);
       dispatch({ type: 'LOAD_USERS', payload: res.data });
     } catch (e) {
       console.error(e);
     }
   };
-  
-  
+
   const getAllUser = async () => {
     try {
       const res = await http.httpAll.get(`users`);
@@ -100,8 +96,7 @@ export const UserProvider = ({ children }) => {
       console.error(e);
     }
   };
-  
-  
+
   const getAgents = async (stokesId) => {
     try {
       const res = await http.httpAll.get(`users/stokes/${stokesId}`);
@@ -115,13 +110,12 @@ export const UserProvider = ({ children }) => {
   const getUser = async (userId) => {
     try {
       const res = await http.httpAll.get(`users/${userId}`);
-      console.log('res', res.data);
       dispatch({ type: 'LOAD_USERS', payload: res.data });
     } catch (e) {
       console.error(e);
     }
   };
-  
+
   const getBalance = async (userId) => {
     try {
       const res = await http.httpAll.get(`users/balance/${userId}`);
@@ -164,26 +158,21 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  // useEffect(() => {
-  //   console.log('User Context calling');
-  //   getStockez(1);
-  // }, []);
-
   return (
     <UserContext.Provider
       value={{
         getUsers,
         getUser,
-		getAllUser,
+        getAllUser,
         getAgents,
         deleteUser,
         clearUsers,
         createUser,
         updateUser,
-		getBalance,
+        getBalance,
         users: state.users,
-		agents: state.agents,
-		balances: state.balances,
+        agents: state.agents,
+        balances: state.balances,
         contextMsg: state.contextMsg,
         contextStatus: state.contextStatus
       }}

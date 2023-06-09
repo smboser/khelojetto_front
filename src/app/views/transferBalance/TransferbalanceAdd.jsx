@@ -20,7 +20,7 @@ import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 // import { LocalizationProvider } from '@mui/lab';
 import useUser from 'app/hooks/useUser';
 import useTransferbalance from 'app/hooks/useTransferbalance';
-
+import useAuth from 'app/hooks/useAuth';
 import { Span } from 'app/components/Typography';
 import { Breadcrumb, SimpleCard } from 'app/components';
 
@@ -47,6 +47,7 @@ const TransferbalanceAdd = () => {
   const { getTransferbalances,createTransferbalance,contextMsg, contextStatus } = useTransferbalance();
   const [loading, setLoading] = useState(false);
   const [balanceAmount, setbalanceAmount] = useState();
+  const { user } = useAuth(); 
   // Snackbar code
   const [open, setOpen] = useState(false);
   if (contextMsg && open === false && response === false) {
@@ -64,6 +65,7 @@ const TransferbalanceAdd = () => {
   
   
    useEffect(() => {
+	   
      getAllUser();
 	  console.log("dmty=",users);
     if (users && typeof users === 'object' && Array.isArray(users)) {
@@ -73,6 +75,7 @@ const TransferbalanceAdd = () => {
 
   console.log("fggggggg=",users);
    const handleSubmit = (event) => {
+	  
     setLoading(true);
     setOpen(false); // Making snackbar off if it is on somehow
     setResponse(false); //
@@ -80,7 +83,7 @@ const TransferbalanceAdd = () => {
 		
 		console.log("sdfsdfsdfs=",state);
       // Adding usertype for Stockez
-      createTransferbalance({ ...state}); // 1 ==> User Type Stockez
+      createTransferbalance({ ...state,from_id: user.user_id});   // 1 ==> User Type Stockez
       setLoading(false);
       //navigate('/');
     } catch (e) {

@@ -24,7 +24,7 @@ const reducer = (state, action) => {
 const SetpowerContext = createContext({
   setpowers: [],
   //deleteSetpower: () => {},
- // clearSetpower: () => {},
+  // clearSetpower: () => {},
   getSetpowers: () => {}
   //createSetpower: () => {}
 });
@@ -53,14 +53,13 @@ export const SetpowerProvider = ({ children }) => {
   const getSetpowers = async () => {
     try {
       const res = await http.httpAll.get(`set-power`);
-      console.log('res', res.data);
       dispatch({ type: 'LOAD_SETPOWER', payload: res.data });
     } catch (e) {
       console.error(e);
     }
   };
 
- /*  const createUser = async (notification) => {
+  /*  const createUser = async (notification) => {
     try {
       const res = await axios.post('/api/notification/add', { notification });
       dispatch({ type: 'CREATE_USER', payload: res.data });
@@ -68,11 +67,6 @@ export const SetpowerProvider = ({ children }) => {
       console.error(e);
     }
   }; */
-
-  // useEffect(() => {
-  //   console.log('User Context calling');
-  //   getStockez(1);
-  // }, []);
 
   return (
     <SetpowerContext.Provider

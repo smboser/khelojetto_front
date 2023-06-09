@@ -1,5 +1,4 @@
-import { Box, styled } from '@mui/material';
-import { Breadcrumb } from 'app/components';
+import { styled } from '@mui/material';
 import Agent from './Agent';
 import AgentAdd from './AgentAdd';
 import { UserProvider } from 'app/contexts/UserContext';
@@ -18,12 +17,9 @@ const AppAgent = (props) => {
   const displayApp = () => {
     if (props?.action && props.action === 'add') {
       return <AgentAdd />;
-     }
-    else if (props?.action && props.action === 'edit') {
+    } else if (props?.action && props.action === 'edit') {
       return <AgentEdit />;
     } else return <Agent />;
-	
-	
   };
   return (
     <Container>

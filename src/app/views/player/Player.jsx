@@ -83,7 +83,7 @@ const Player = () => {
   };
   // Snackbar code
 
-  const handleEdit = (userId,stoId) => {
+  const handleEdit = (userId, stoId) => {
     navigate(`/users/player/edit/${userId}/${stoId}`);
   };
 
@@ -113,7 +113,7 @@ const Player = () => {
     { id: 'ag_id', label: 'Agent' },
     { id: 'type', label: 'Details' },
     { id: 'balance', label: 'Credit' },
-   
+
     { id: 'actions', label: 'Actions' }
   ];
 
@@ -181,9 +181,9 @@ const Player = () => {
                         onChange={handleSearch}
                       />
                       <NavLink to="/users/player/add" style={{ color: palette.primary.main }}>
-                       <Fab size="medium" color="primary" aria-label="Add" className="button">
-                        <Icon>add</Icon>
-                       </Fab>
+                        <Fab size="medium" color="primary" aria-label="Add" className="button">
+                          <Icon>add</Icon>
+                        </Fab>
                       </NavLink>
                     </Box>
                   </Toolbar>
@@ -200,9 +200,9 @@ const Player = () => {
                             <TableCell>{item.ag_id}</TableCell>
                             <TableCell></TableCell>
                             <TableCell>{item.balance}</TableCell>
-                           
+
                             <TableCell>
-                              <IconButton onClick={() => handleEdit(item.user_id,item.sto_id)}>
+                              <IconButton onClick={() => handleEdit(item.user_id, item.sto_id)}>
                                 <Icon fontSize="large" color="secondary">
                                   mode_edit
                                 </Icon>

@@ -20,7 +20,6 @@ const logout = () => {
 const isLoggedIn = () => {
   let tokenPayload = getToken();
   let decodedTokenPayload = jwtDecode(tokenPayload);
-  console.log(decodedTokenPayload.exp + '--' + Date.now());
   if (decodedTokenPayload?.exp && decodedTokenPayload.exp * 1000 > Date.now()) {
     return true;
   } else {

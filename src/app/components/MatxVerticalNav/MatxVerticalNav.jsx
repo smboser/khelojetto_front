@@ -4,6 +4,7 @@ import React, { Fragment } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Paragraph, Span } from '../Typography';
 import MatxVerticalNavExpansionPanel from './MatxVerticalNavExpansionPanel';
+import useAuth from 'app/hooks/useAuth';
 
 const ListLabel = styled(Paragraph)(({ theme, mode }) => ({
   fontSize: '12px',
@@ -12,7 +13,7 @@ const ListLabel = styled(Paragraph)(({ theme, mode }) => ({
   marginBottom: '10px',
   textTransform: 'uppercase',
   display: mode === 'compact' && 'none',
-  color: theme.palette.text.secondary,
+  color: theme.palette.text.secondary
 }));
 
 const ExtAndIntCommon = {
@@ -28,34 +29,34 @@ const ExtAndIntCommon = {
   '&:hover': { background: 'rgba(255, 255, 255, 0.08)' },
   '&.compactNavItem': {
     overflow: 'hidden',
-    justifyContent: 'center !important',
+    justifyContent: 'center !important'
   },
   '& .icon': {
     fontSize: '18px',
     paddingLeft: '16px',
     paddingRight: '16px',
-    verticalAlign: 'middle',
-  },
+    verticalAlign: 'middle'
+  }
 };
 const ExternalLink = styled('a')(({ theme }) => ({
   ...ExtAndIntCommon,
-  color: theme.palette.text.primary,
+  color: theme.palette.text.primary
 }));
 
 const InternalLink = styled(Box)(({ theme }) => ({
   '& a': {
     ...ExtAndIntCommon,
-    color: theme.palette.text.primary,
+    color: theme.palette.text.primary
   },
   '& .navItemActive': {
-    backgroundColor: 'rgba(255, 255, 255, 0.16)',
-  },
+    backgroundColor: 'rgba(255, 255, 255, 0.16)'
+  }
 }));
 
 const StyledText = styled(Span)(({ mode }) => ({
   fontSize: '0.875rem',
   paddingLeft: '0.8rem',
-  display: mode === 'compact' && 'none',
+  display: mode === 'compact' && 'none'
 }));
 
 const BulletIcon = styled('div')(({ theme }) => ({
@@ -64,106 +65,111 @@ const BulletIcon = styled('div')(({ theme }) => ({
   marginRight: '8px',
   overflow: 'hidden',
   borderRadius: '300px',
-  background: theme.palette.text.primary,
+  background: theme.palette.text.primary
 }));
 
 const BadgeValue = styled('div')(() => ({
   padding: '1px 8px',
   overflow: 'hidden',
-  borderRadius: '300px',
+  borderRadius: '300px'
 }));
 
 const MatxVerticalNav = ({ items }) => {
   const { settings } = useSettings();
   const { mode } = settings.layout1Settings.leftSidebar;
+  const { user } = useAuth();
 
   const renderLevels = (data) => {
     return data.map((item, index) => {
-      if (item.type === 'label')
-        return (
-          <ListLabel key={index} mode={mode} className="sidenavHoverShow">
-            {item.label}
-          </ListLabel>
-        );
+      if (item?.role?.indexOf(user?.user_type) > -1) {
+        if (item.type === 'label')
+          return (
+            <ListLabel key={index} mode={mode} className="sidenavHoverShow">
+              {item.label}
+            </ListLabel>
+          );
 
-      if (item.children) {
-        return (
-          <MatxVerticalNavExpansionPanel mode={mode} item={item} key={index}>
-            {renderLevels(item.children)}
-          </MatxVerticalNavExpansionPanel>
-        );
-      } else if (item.type === 'extLink') {
-        return (
-          <ExternalLink
-            key={index}
-            href={item.path}
-            className={`${mode === 'compact' && 'compactNavItem'}`}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <ButtonBase key={item.name} name="child" sx={{ width: '100%' }}>
-              {(() => {
-                if (item.icon) {
-                  return <Icon className="icon">{item.icon}</Icon>;
-                } else {
-                  return <span className="item-icon icon-text">{item.iconText}</span>;
-                }
-              })()}
-              <StyledText mode={mode} className="sidenavHoverShow">
-                {item.name}
-              </StyledText>
-              <Box mx="auto"></Box>
-              {item.badge && <BadgeValue>{item.badge.value}</BadgeValue>}
-            </ButtonBase>
-          </ExternalLink>
-        );
-      } else {
-        return (
-          <InternalLink key={index}>
-            <NavLink
-              to={item.path}
-              className={({ isActive }) =>
-                isActive
-                  ? `navItemActive ${mode === 'compact' && 'compactNavItem'}`
-                  : `${mode === 'compact' && 'compactNavItem'}`
-              }
+        if (item.children) {
+          return (
+            <MatxVerticalNavExpansionPanel mode={mode} item={item} key={index}>
+              {renderLevels(item.children)}
+            </MatxVerticalNavExpansionPanel>
+          );
+        } else if (item.type === 'extLink') {
+          return (
+            <ExternalLink
+              key={index}
+              href={item.path}
+              className={`${mode === 'compact' && 'compactNavItem'}`}
+              rel="noopener noreferrer"
+              target="_blank"
             >
               <ButtonBase key={item.name} name="child" sx={{ width: '100%' }}>
-                {item?.icon ? (
-                  <Icon className="icon" sx={{ width: 36 }}>
-                    {item.icon}
-                  </Icon>
-                ) : (
-                  <Fragment>
-                    <BulletIcon
-                      className={`nav-bullet`}
-                      sx={{ display: mode === 'compact' && 'none' }}
-                    />
-                    <Box
-                      className="nav-bullet-text"
-                      sx={{
-                        ml: '20px',
-                        fontSize: '11px',
-                        display: mode !== 'compact' && 'none',
-                      }}
-                    >
-                      {item.iconText}
-                    </Box>
-                  </Fragment>
-                )}
+                {(() => {
+                  if (item.icon) {
+                    return <Icon className="icon">{item.icon}</Icon>;
+                  } else {
+                    return <span className="item-icon icon-text">{item.iconText}</span>;
+                  }
+                })()}
                 <StyledText mode={mode} className="sidenavHoverShow">
                   {item.name}
                 </StyledText>
-
-                <Box mx="auto" />
-
-                {item.badge && (
-                  <BadgeValue className="sidenavHoverShow">{item.badge.value}</BadgeValue>
-                )}
+                <Box mx="auto"></Box>
+                {item.badge && <BadgeValue>{item.badge.value}</BadgeValue>}
               </ButtonBase>
-            </NavLink>
-          </InternalLink>
-        );
+            </ExternalLink>
+          );
+        } else {
+          return (
+            <InternalLink key={index}>
+              <NavLink
+                to={item.path}
+                className={({ isActive }) =>
+                  isActive
+                    ? `navItemActive ${mode === 'compact' && 'compactNavItem'}`
+                    : `${mode === 'compact' && 'compactNavItem'}`
+                }
+              >
+                <ButtonBase key={item.name} name="child" sx={{ width: '100%' }}>
+                  {item?.icon ? (
+                    <Icon className="icon" sx={{ width: 36 }}>
+                      {item.icon}
+                    </Icon>
+                  ) : (
+                    <Fragment>
+                      <BulletIcon
+                        className={`nav-bullet`}
+                        sx={{ display: mode === 'compact' && 'none' }}
+                      />
+                      <Box
+                        className="nav-bullet-text"
+                        sx={{
+                          ml: '20px',
+                          fontSize: '11px',
+                          display: mode !== 'compact' && 'none'
+                        }}
+                      >
+                        {item.iconText}
+                      </Box>
+                    </Fragment>
+                  )}
+                  <StyledText mode={mode} className="sidenavHoverShow">
+                    {item.name}
+                  </StyledText>
+
+                  <Box mx="auto" />
+
+                  {item.badge && (
+                    <BadgeValue className="sidenavHoverShow">{item.badge.value}</BadgeValue>
+                  )}
+                </ButtonBase>
+              </NavLink>
+            </InternalLink>
+          );
+        }
+      } else {
+        return <></>;
       }
     });
   };

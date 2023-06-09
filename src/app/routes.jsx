@@ -57,8 +57,8 @@ const routes = [
       // e-chart rooute
       {
         path: '/charts/echarts',
-        element: <AppEchart />,
-        auth: authRoles.editor
+        element: <AppEchart auth="abdc" />,
+        customA: authRoles.sa
       },
 
       {
@@ -76,7 +76,7 @@ const routes = [
         element: <StockezComponent action="edit" />,
         auth: authRoles.admin
       },
-	  {
+      {
         path: '/users/agent',
         element: <AgentComponent action="list" />,
         auth: authRoles.admin
@@ -91,19 +91,16 @@ const routes = [
         element: <AgentComponent action="edit" />,
         auth: authRoles.admin
       },
-	  
-	  {
+      {
         path: '/users/player',
         element: <PlayerComponent action="list" />,
         auth: authRoles.admin
       },
-
-	    {
+      {
         path: '/users/player/add',
         element: <PlayerComponent action="add" />,
         auth: authRoles.admin
       },
-      
       {
         path: '/users/player/edit/:userId/:stoId',
         element: <PlayerComponent action="edit" />,
@@ -114,7 +111,6 @@ const routes = [
         element: <AppSetpower />,
         auth: authRoles.admin
       },
-
       {
         path: '/points/transferBalance',
         element: <AppTransferbalance />,

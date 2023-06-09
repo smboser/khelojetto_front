@@ -15,8 +15,8 @@ const reducer = (state, action) => {
     case 'CLEAR_TRANSFERBALANCE': {
       return { ...state, points: action.payload };
     }
-	
-	case 'CREATE_TRANSFERBALANCE': {
+
+    case 'CREATE_TRANSFERBALANCE': {
       return { ...state, ...action.payload };
     }
 
@@ -28,9 +28,9 @@ const reducer = (state, action) => {
 const TransferbalanceContext = createContext({
   points: [],
   //deleteSetpower: () => {},
- // clearSetpower: () => {},
-  getTransferbalances: () => {}
-  //createSetpower: () => {}
+  // clearSetpower: () => {},
+  getTransferbalances: () => {},
+  createTransferbalance: () => {}
 });
 
 export const TransferbalanceProvider = ({ children }) => {
@@ -57,14 +57,13 @@ export const TransferbalanceProvider = ({ children }) => {
   const getTransferbalances = async () => {
     try {
       const res = await http.httpAll.get(`points`);
-      console.log('res', res.data);
       dispatch({ type: 'LOAD_TRANSFERBALANCE', payload: res.data });
     } catch (e) {
       console.error(e);
     }
   };
 
-   const createTransferbalance = async (point) => {
+  const createTransferbalance = async (point) => {
     try {
       await http.httpAll.post(`points/add`, { ...point });
       dispatch({
@@ -90,7 +89,7 @@ export const TransferbalanceProvider = ({ children }) => {
       value={{
         getTransferbalances,
         points: state.points,
-		createTransferbalance
+        createTransferbalance
       }}
     >
       {children}

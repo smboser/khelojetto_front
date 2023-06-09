@@ -10,10 +10,9 @@ import {
   styled,
   Alert,
   Snackbar,
-   Select,
+  Select,
   InputLabel,
   MenuItem
-  
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
@@ -41,11 +40,10 @@ const TextField = styled(TextValidator)(() => ({
 const AgentEdit = () => {
   const [state, setState] = useState({});
   const [response, setResponse] = useState(false); // For api response
-  const {getUsers, getUser, updateUser, users, contextMsg, contextStatus } = useUser();
-  const [loading, setLoading] = useState(false);
+  const { getUsers, getUser, updateUser, users, contextMsg, contextStatus } = useUser();
   const { userId } = useParams();
   const navigate = useNavigate();
-   const [stokesdetails, setStokesdetails] = useState([]);
+  const [stokesdetails, setStokesdetails] = useState([]);
   // Snackbar code
   const [open, setOpen] = useState(false);
   if (contextMsg && open === false && response === false) {
@@ -70,6 +68,7 @@ const AgentEdit = () => {
       return true;
     });
     return () => ValidatorForm.removeValidationRule('isPasswordMatch');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.password]);
 
   useEffect(() => {
@@ -77,56 +76,48 @@ const AgentEdit = () => {
     if (users && typeof users === 'object' && !Array.isArray(users)) {
       setState({ ...state, ...users });
     }
-	
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [!users || (users && Array.isArray(users))]);
-  
+
   //console.log("dfgh=", state);
-  
-   useEffect(() => {
-     getUsers(1);
+
+  useEffect(() => {
+    getUsers(1);
     if (users && typeof users === 'object' && Array.isArray(users)) {
       setStokesdetails(users);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [!users || (users && !Array.isArray(users))]);
 
   const handleSubmit = (event) => {
-    setLoading(true);
     setOpen(false); // Making Snackbar off if it is on somehow
     setResponse(false); //
     try {
       // Adding usertype for Stockez
       updateUser(state, userId);
-      setLoading(false);
       //navigate('/');
     } catch (e) {
-      setLoading(false);
+      console.log(e);
     }
   };
-  
+
   const handleInput = (event) => {
     const inputVal = event.target.value;
     const inputName = event.target.name;
     setState({
       ...state,
       [inputName]: inputVal
-      
     });
-    
   };
-  
-  
-   
-
 
   const handleChange = (event) => {
     event.persist();
     setState({ ...state, [event.target.name]: event.target.value });
   };
 
-  const { username, name, mobile, password, confirmPassword, user_status, email,type,sto_id} = state;
+  const { username, name, mobile, password, confirmPassword, user_status, email, type, sto_id } =
+    state;
   return (
-  
-      
     <Container>
       <Box className="breadcrumb">
         <Breadcrumb
@@ -181,46 +172,36 @@ const AgentEdit = () => {
                         validators={['required', 'isEmail']}
                         errorMessages={['this field is required', 'email is not valid']}
                       />
-					   <InputLabel id="demo-simple-select-label">
-                  {" "}
-                  Stokes
-                </InputLabel>
-					  
-					  <Select
-                  id="stokes"
-                  onChange={handleInput}
-                  name="sto_id"
-                  value={sto_id || ""}
-                  fullWidth
-                  variant="outlined"
-                >
-				 {stokesdetails && stokesdetails.map((item, index) => (
-                    <MenuItem key={index} value={item.user_id}>
-                      {item.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-					  
-					   <InputLabel id="demo-simple-select-label">
-                  {" "}
-                  Type
-                </InputLabel>
-                <Select
-                  id="schoolType"
-				  label="Select Type"
-                  onChange={handleInput}
-                  name="type"
-                  value={type || ""}
-                  fullWidth
-                  variant="outlined"
-                >
-                  
-                    <MenuItem value={'TN'}>
-                      {'TN'}
-                    </MenuItem>
-                 
-                </Select>
-				 
+                      <InputLabel id="demo-simple-select-label"> Stokes</InputLabel>
+
+                      <Select
+                        id="stokes"
+                        onChange={handleInput}
+                        name="sto_id"
+                        value={sto_id || ''}
+                        fullWidth
+                        variant="outlined"
+                      >
+                        {stokesdetails &&
+                          stokesdetails.map((item, index) => (
+                            <MenuItem key={index} value={item.user_id}>
+                              {item.name}
+                            </MenuItem>
+                          ))}
+                      </Select>
+
+                      <InputLabel id="demo-simple-select-label"> Type</InputLabel>
+                      <Select
+                        id="schoolType"
+                        label="Select Type"
+                        onChange={handleInput}
+                        name="type"
+                        value={type || ''}
+                        fullWidth
+                        variant="outlined"
+                      >
+                        <MenuItem value={'TN'}>{'TN'}</MenuItem>
+                      </Select>
                     </Grid>
                     <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                       <TextField
@@ -271,9 +252,6 @@ const AgentEdit = () => {
                           control={<Radio color="secondary" />}
                         />
                       </RadioGroup>
-					 
-					  
-					  
                     </Grid>
                   </Grid>
                   <Button color="primary" variant="contained" type="submit">

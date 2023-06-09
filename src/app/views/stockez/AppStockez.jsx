@@ -15,7 +15,6 @@ const Container = styled('div')(({ theme }) => ({
 }));
 
 const AppStockez = (props) => {
-  console.log(props.action);
   const displayApp = () => {
     if (props?.action && props.action === 'add') {
       return <StockezAdd />;

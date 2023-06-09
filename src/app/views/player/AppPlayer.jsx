@@ -1,5 +1,4 @@
-import { Box, styled } from '@mui/material';
-import { Breadcrumb } from 'app/components';
+import { styled } from '@mui/material';
 import Player from './Player';
 import PlayerAdd from './PlayerAdd';
 import { UserProvider } from 'app/contexts/UserContext';
@@ -18,12 +17,9 @@ const AppPlayer = (props) => {
   const displayApp = () => {
     if (props?.action && props.action === 'add') {
       return <PlayerAdd />;
-     }
-    else if (props?.action && props.action === 'edit') {
+    } else if (props?.action && props.action === 'edit') {
       return <PlayerEdit />;
     } else return <Player />;
-	
-	
   };
   return (
     <Container>

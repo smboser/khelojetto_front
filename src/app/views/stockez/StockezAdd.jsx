@@ -1,7 +1,6 @@
 import {
   Box,
   Stack,
-  Button,
   FormControlLabel,
   Grid,
   Icon,
@@ -10,11 +9,12 @@ import {
   styled,
   Alert,
   Snackbar,
-   Select,
+  Select,
   InputLabel,
   MenuItem,
   Checkbox
 } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 
 import { useEffect, useState } from 'react';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
@@ -40,24 +40,12 @@ const TextField = styled(TextValidator)(() => ({
   marginBottom: '16px'
 }));
 
-
-
 const StockezAdd = () => {
   const [state, setState] = useState({ date: new Date() });
   const [response, setResponse] = useState(false); // For api response
-  const { getUsers, deleteUser, createUser, users, contextMsg, contextStatus } = useUser();
+  const { createUser, contextMsg, contextStatus } = useUser();
   const [loading, setLoading] = useState(false);
-  
-  const [anchorEl, setAnchorEl] = useState(null);
 
-  function handleClick(event) {
-    setAnchorEl(event.currentTarget);
-  }
-
-  
-  /* function handleClose() {
-    setAnchorEl(null);
-  } */
   // Snackbar code
   const [open, setOpen] = useState(false);
   if (contextMsg && open === false && response === false) {
@@ -93,67 +81,74 @@ const StockezAdd = () => {
       setLoading(false);
     }
   };
-  
-  
-  const [checked, setChecked] = useState(false);
-   let inputVal=0;
-  let inputValx=false;
+
+  let inputVal = 0;
+  let inputValx = false;
   const handleChange1 = (event) => {
-    setChecked(event.target.checked);
-	inputValx=event.target.checked;
-	if(inputValx===true){
-		
-	inputVal=1;	
-	setState({ ...state, [event.target.name]: inputVal });
-	}
-	else{
-		inputVal=0;	
-		if(event.target.name==="update_agents_revenue"){
-			
-		setState({ ...state,'joker_a':0,'tripple_a':0,'single_a':0,'double_a':0, [event.target.name]: inputVal });	
-		}
-		
-		if(event.target.name==="update_player_revenue"){
-			
-		setState({ ...state,'joker_p':0,'tripple_p':0,'single_p':0,'double_p':0, [event.target.name]: inputVal });	
-		}
-		
-	}
-	
-  };
-  
-  const [checked1, setChecked1] = useState(false);
-   let inputVala=0;
-  let inputValb=false;
-  const handleChange2 = (event) => {
-    setChecked1(event.target.checked);
-	inputValb=event.target.checked;
-	if(inputValb==true){
-		
-	inputVala=1;	
-	}
-	else{
-		inputVala=0;	
-		
-	}
-	setState({ ...state, [event.target.name]: inputVala });
+    inputValx = event.target.checked;
+    if (inputValx === true) {
+      inputVal = 1;
+      setState({ ...state, [event.target.name]: inputVal });
+    } else {
+      inputVal = 0;
+      if (event.target.name === 'update_agents_revenue') {
+        setState({
+          ...state,
+          joker_a: 0,
+          tripple_a: 0,
+          single_a: 0,
+          double_a: 0,
+          [event.target.name]: inputVal
+        });
+      }
+
+      if (event.target.name === 'update_player_revenue') {
+        setState({
+          ...state,
+          joker_p: 0,
+          tripple_p: 0,
+          single_p: 0,
+          double_p: 0,
+          [event.target.name]: inputVal
+        });
+      }
+    }
   };
 
   const handleChange = (event) => {
     event.persist();
     setState({ ...state, [event.target.name]: event.target.value });
   };
-  
+
   const handleInput = (event) => {
     const inputVal = event.target.value;
     const inputName = event.target.name;
-   setState({ ...state, [inputName]: inputVal });
+    setState({ ...state, [inputName]: inputVal });
     // frmData.append(inputName, inputVal)
   };
 
-
   //const handleDateChange = (date) => setState({ ...state, date });
-  const { username, name, mobile, password, confirmPassword, user_status, email,revenue,type,joker_a,tripple_a,single_a,double_a,joker_p,tripple_p,single_p,double_p,update_player_revenue,update_agents_revenue } = state;
+  const {
+    username,
+    name,
+    mobile,
+    password,
+    confirmPassword,
+    user_status,
+    email,
+    revenue,
+    type,
+    joker_a,
+    tripple_a,
+    single_a,
+    double_a,
+    joker_p,
+    tripple_p,
+    single_p,
+    double_p,
+    update_player_revenue,
+    update_agents_revenue
+  } = state;
   return (
     <Container>
       <Box className="breadcrumb">
@@ -209,8 +204,8 @@ const StockezAdd = () => {
                         validators={['required', 'isEmail']}
                         errorMessages={['this field is required', 'email is not valid']}
                       />
-					  
-					  <TextField
+
+                      <TextField
                         type="text"
                         name="revenue"
                         label="Revenue(%)"
@@ -219,77 +214,70 @@ const StockezAdd = () => {
                         validators={['required']}
                         errorMessages={['this field is required']}
                       />
-					  
-					   <InputLabel id="demo-simple-select-label">
-                  {" "}
-                   Type
-                </InputLabel>
-                <Select
-                  id="type"
-                  onChange={handleInput}
-                  name="type"
-                  defaultValue={type || ""}
-                  fullWidth
-                  variant="outlined"
-                >
-                  <MenuItem value={"TN"}>TN</MenuItem>
-                </Select>
-					  
-					 
-					  <FormControlLabel
-              control={<Checkbox
 
-                checked={update_agents_revenue}
-                onChange={handleChange1}
-                name="update_agents_revenue"
-				
-			  />}
-              label="Update Agents Revenue "
-            />
-			
-			<TextField
+                      <InputLabel id="demo-simple-select-label"> Type</InputLabel>
+                      <Select
+                        id="type"
+                        onChange={handleInput}
+                        name="type"
+                        defaultValue={type || ''}
+                        fullWidth
+                        variant="outlined"
+                      >
+                        <MenuItem value={'TN'}>TN</MenuItem>
+                      </Select>
+
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={update_agents_revenue}
+                            onChange={handleChange1}
+                            name="update_agents_revenue"
+                          />
+                        }
+                        label="Update Agents Revenue "
+                      />
+
+                      <TextField
                         type="text"
                         name="joker_a"
                         label="Revenue Jeeto Joker(%)"
                         onChange={handleChange}
                         value={joker_a || ''}
-						disabled={update_agents_revenue?false:true}
+                        disabled={update_agents_revenue ? false : true}
                         validators={[]}
                         errorMessages={['this field is required']}
                       />
-					  
-					  
-					  <TextField
+
+                      <TextField
                         type="text"
                         name="tripple_a"
                         label="Revenue Tripple Chance P(%)"
                         onChange={handleChange}
                         value={tripple_a || ''}
-						disabled={update_agents_revenue?false:true}
+                        disabled={update_agents_revenue ? false : true}
                         validators={[]}
                         errorMessages={['this field is required']}
                       />
-					  
-					  <TextField
+
+                      <TextField
                         type="text"
                         name="single_a"
                         label="Revenue Single Chance P(%)"
                         onChange={handleChange}
                         value={single_a || ''}
-						disabled={update_agents_revenue?false:true}
+                        disabled={update_agents_revenue ? false : true}
                         validators={[]}
                         errorMessages={['this field is required']}
                       />
-					  
-					  
-					  
-					  <TextField
+
+                      <TextField
                         type="text"
                         name="double_a"
                         label="Revenue Double Chance P(%)"
                         onChange={handleChange}
                         value={double_a || ''}
-						disabled={update_agents_revenue?false:true}
+                        disabled={update_agents_revenue ? false : true}
                         validators={[]}
                         errorMessages={['this field is required']}
                       />
@@ -349,9 +337,7 @@ const StockezAdd = () => {
                         validators={['required', 'isPasswordMatch']}
                         errorMessages={['this field is required', "password didn't match"]}
                       />
-					  
-					  
-                       
+
                       <RadioGroup
                         row
                         name="user_status"
@@ -374,70 +360,72 @@ const StockezAdd = () => {
                         />
                       </RadioGroup>
 
-                    <FormControlLabel
-              control={<Checkbox 
-			  
-			    checked={update_player_revenue}
-                onChange={handleChange1}
-                name="update_player_revenue"
-			    
-			  />}
-              label="Update Player Revenue "
-            />
-			
-			<TextField
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={update_player_revenue}
+                            onChange={handleChange1}
+                            name="update_player_revenue"
+                          />
+                        }
+                        label="Update Player Revenue "
+                      />
+
+                      <TextField
                         type="text"
                         name="joker_p"
                         label="Revenue Jeeto Joker(%)"
                         onChange={handleChange}
                         value={joker_p || ''}
-						disabled={update_player_revenue?false:true}
+                        disabled={update_player_revenue ? false : true}
                         validators={[]}
                         errorMessages={['this field is required']}
                       />
-					  
-					  
-					  <TextField
+
+                      <TextField
                         type="text"
                         name="tripple_p"
                         label="Revenue Tripple Chance P(%)"
                         onChange={handleChange}
                         value={tripple_p || ''}
-						disabled={update_player_revenue?false:true}
+                        disabled={update_player_revenue ? false : true}
                         validators={[]}
                         errorMessages={['this field is required']}
                       />
-					  
-					  <TextField
+
+                      <TextField
                         type="text"
                         name="single_p"
                         label="Revenue Single Chance P(%)"
                         onChange={handleChange}
                         value={single_p || ''}
-						disabled={update_player_revenue?false:true}
+                        disabled={update_player_revenue ? false : true}
                         validators={[]}
                         errorMessages={['this field is required']}
                       />
-					  
-					  
-					  
-					  <TextField
+
+                      <TextField
                         type="text"
                         name="double_p"
                         label="Revenue Double Chance P(%)"
                         onChange={handleChange}
                         value={double_p || ''}
-						disabled={update_player_revenue?false:true}
+                        disabled={update_player_revenue ? false : true}
                         validators={[]}
                         errorMessages={['this field is required']}
                       />
                     </Grid>
                   </Grid>
 
-                  <Button color="primary" variant="contained" type="submit">
+                  <LoadingButton
+                    color="primary"
+                    variant="contained"
+                    type="submit"
+                    loading={loading}
+                  >
                     <Icon>send</Icon>
                     <Span sx={{ pl: 1, textTransform: 'capitalize' }}>Submit</Span>
-                  </Button>
+                  </LoadingButton>
                 </ValidatorForm>
               </div>
             </SimpleCard>

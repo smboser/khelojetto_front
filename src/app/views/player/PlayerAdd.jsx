@@ -13,7 +13,6 @@ import {
   Select,
   InputLabel,
   MenuItem
- 
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
@@ -42,10 +41,7 @@ const TextField = styled(TextValidator)(() => ({
 const PlayerAdd = () => {
   const [state, setState] = useState({ date: new Date() });
   const [response, setResponse] = useState(false); // For api response
-  const { getAgents,getUsers, deleteUser, createUser, users, agents, contextMsg, contextStatus } = useUser();
-  const [loading, setLoading] = useState(false);
-   const [stokesdetails, setStokesdetails] = useState([]);
-  const [agentdetails, setAgentdetails] = useState([]);
+  const { getAgents, getUsers, createUser, users, agents, contextMsg, contextStatus } = useUser();
   // Snackbar code
   const [open, setOpen] = useState(false);
   if (contextMsg && open === false && response === false) {
@@ -61,61 +57,52 @@ const PlayerAdd = () => {
   // Snackbar code
 
   useEffect(() => {
-	  
     ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
       if (value !== state.password) return false;
       return true;
     });
     return () => ValidatorForm.removeValidationRule('isPasswordMatch');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.password]);
-  
-   useEffect(() => {
-     getUsers(1);
+
+  useEffect(() => {
+    getUsers(1);
     if (users && typeof users === 'object' && Array.isArray(users)) {
-     setState({ ...state, ...users });
+      setState({ ...state, ...users });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [!users || (users && !Array.isArray(users))]);
 
-
-   const handleSubmit = (event) => {
-    setLoading(true);
+  const handleSubmit = (event) => {
     setOpen(false); // Making snackbar off if it is on somehow
     setResponse(false); //
     try {
-		
-		console.log("sdfsdfsdfs=",state);
       // Adding usertype for Stockez
-      createUser({ ...state, usertype: 3}); // 1 ==> User Type Stockez
-      setLoading(false);
+      createUser({ ...state, usertype: 3 }); // 1 ==> User Type Stockez
       //navigate('/');
     } catch (e) {
-      setLoading(false);
+      console.log(e);
     }
   };
-  
+
   const handleInput = (event) => {
-	  
-	  const inputVal = event.target.value;
+    const inputVal = event.target.value;
     const inputName = event.target.name;
     setState({
       ...state,
       [inputName]: inputVal
-      
     });
-	
-	getAgents(inputVal); 
-	
-    
+
+    getAgents(inputVal);
   };
-  
-  
+
   const handleChange = (event) => {
     // event.persist();
     setState({ ...state, [event.target.name]: event.target.value });
   };
 
   //const handleDateChange = (date) => setState({ ...state, date });
-  const { username, name, mobile, password, confirmPassword, user_status, email,type,sto_id} = state;
+  const { username, name, mobile, password, confirmPassword, user_status, email } = state;
   return (
     <Container>
       <Box className="breadcrumb">
@@ -171,46 +158,42 @@ const PlayerAdd = () => {
                         validators={['required', 'isEmail']}
                         errorMessages={['this field is required', 'email is not valid']}
                       />
-					  
-					   <InputLabel id="demo-simple-select-label">
-                  {" "}
-                  Stockes
-                </InputLabel>
-					  
-					  <Select
-                  id="stokes"
-                  onChange={handleInput}
-                  name="sto_id"
-                  defaultValue={"Please select stokes"}
-                  fullWidth
-                  variant="outlined"
-                >
-				 {users && users.map((item, index) => (
-                    <MenuItem key={index} value={item.user_id}>
-                      {item.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-					  
-					  <InputLabel id="demo-simple-select-label">
-                  {" "}
-                  Agent
-                </InputLabel>
-					  
-					  <Select
-                  id="agent"
-                  onChange={handleChange}
-                  name="ag_id"
-                  defaultValue={"Please select agents"}
-                  fullWidth
-                  variant="outlined"
-                >
-				 {agents && agents.map((item, index) => (
-                    <MenuItem key={index} value={item.user_id}>
-                      {item.name}
-                    </MenuItem>
-                  ))}
-                </Select>
+
+                      <InputLabel id="demo-simple-select-label"> Stockes</InputLabel>
+
+                      <Select
+                        id="stokes"
+                        onChange={handleInput}
+                        name="sto_id"
+                        defaultValue={'Please select stokes'}
+                        fullWidth
+                        variant="outlined"
+                      >
+                        {users &&
+                          users.map((item, index) => (
+                            <MenuItem key={index} value={item.user_id}>
+                              {item.name}
+                            </MenuItem>
+                          ))}
+                      </Select>
+
+                      <InputLabel id="demo-simple-select-label"> Agent</InputLabel>
+
+                      <Select
+                        id="agent"
+                        onChange={handleChange}
+                        name="ag_id"
+                        defaultValue={'Please select agents'}
+                        fullWidth
+                        variant="outlined"
+                      >
+                        {agents &&
+                          agents.map((item, index) => (
+                            <MenuItem key={index} value={item.user_id}>
+                              {item.name}
+                            </MenuItem>
+                          ))}
+                      </Select>
 
                       {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
                           <DatePicker
@@ -237,8 +220,6 @@ const PlayerAdd = () => {
                         errorMessages={['this field is required']}
                         validators={['required', 'minStringLength:16', 'maxStringLength: 16']}
                       /> */}
-					  
-					  
                     </Grid>
 
                     <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
@@ -290,8 +271,6 @@ const PlayerAdd = () => {
                           control={<Radio color="secondary" />}
                         />
                       </RadioGroup>
-
-                      
                     </Grid>
                   </Grid>
 
