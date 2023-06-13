@@ -5,15 +5,23 @@ import http from '../../config/http';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'LOAD_SETPOWER': {
-      return { ...state, setpowers: action.payload };
+      return { ...state, powers: action.payload, contextStatus: null, contextMsg: null };
+    }
+
+    case 'LOAD_RANDOMPOWER': {
+      return { ...state, powerSingle: action.payload, contextStatus: null, contextMsg: null };
     }
 
     case 'DELETE_SETPOWER': {
-      return { ...state, setpowers: action.payload };
+      return { ...state, powers: action.payload };
     }
 
     case 'CLEAR_SETPOWER': {
-      return { ...state, setpowers: action.payload };
+      return { ...state, powers: action.payload };
+    }
+	
+	case 'CREATE_POWER': {
+      return { ...state, ...action.payload };
     }
 
     default:
@@ -22,11 +30,13 @@ const reducer = (state, action) => {
 };
 
 const SetpowerContext = createContext({
-  setpowers: [],
+  powers: [],
+  powerSingle: [],
   //deleteSetpower: () => {},
   // clearSetpower: () => {},
-  getSetpowers: () => {}
-  //createSetpower: () => {}
+  getRandomGame: () => {},
+  getSetpowers: () => {},
+  createSetpower: () => {}
 });
 
 export const SetpowerProvider = ({ children }) => {
@@ -59,20 +69,41 @@ export const SetpowerProvider = ({ children }) => {
     }
   };
 
-  /*  const createUser = async (notification) => {
+  const getRandomGame = async () => {
     try {
-      const res = await axios.post('/api/notification/add', { notification });
-      dispatch({ type: 'CREATE_USER', payload: res.data });
+      const res = await http.httpAll.get(`set-power/gameid`);
+      dispatch({ type: 'LOAD_RANDOMPOWER', payload: res.data });
     } catch (e) {
       console.error(e);
     }
-  }; */
+  };
+
+  const createSetpower = async (power) => {
+    try {
+      await http.httpAll.post(`set-power/add`, { ...power });
+      dispatch({
+        type: 'CREATE_POWER',
+        payload: { contextStatus: 1, contextMsg: 'Power created successfully.' }
+      });
+    } catch (e) {
+      dispatch({
+        type: 'CREATE_POWER',
+        payload: { contextStatus: 0, contextMsg: 'Error! Please try later.' }
+      });
+      console.error(e);
+    }
+  };
 
   return (
     <SetpowerContext.Provider
       value={{
+		createSetpower,  
         getSetpowers,
-        setpowers: state.setpowers
+        getRandomGame,
+        powerSingle: state.powerSingle,
+        powers: state.powers,
+		contextMsg: state.contextMsg,
+        contextStatus: state.contextStatus
       }}
     >
       {children}

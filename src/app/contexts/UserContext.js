@@ -8,8 +8,16 @@ const reducer = (state, action) => {
       return { ...state, users: action.payload, contextStatus: null, contextMsg: null };
     }
 
+    case 'LOAD_ALLUSERS': {
+      return { ...state, users: action.payload, contextStatus: null, contextMsg: null };
+    }
+
     case 'LOAD_AGENTS': {
       return { ...state, agents: action.payload, contextStatus: null, contextMsg: null };
+    }
+
+    case 'LOAD_BALANCE': {
+      return { ...state, balances: action.payload, contextStatus: null, contextMsg: null };
     }
 
     case 'DELETE_USER': {
@@ -32,7 +40,8 @@ const UserContext = createContext({
   getUsers: () => {},
   getUser: () => {},
   getAgents: () => {},
-  createUser: () => {}
+  createUser: () => {},
+  getAllUser: () => {}
 });
 
 export const UserProvider = ({ children }) => {
@@ -78,6 +87,16 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const getAllUser = async () => {
+    try {
+      const res = await http.httpAll.get(`users`);
+      console.log('res', res.data);
+      dispatch({ type: 'LOAD_ALLUSERS', payload: res.data });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const getAgents = async (stokesId) => {
     try {
       const res = await http.httpAll.get(`users/stokes/${stokesId}`);
@@ -92,6 +111,16 @@ export const UserProvider = ({ children }) => {
     try {
       const res = await http.httpAll.get(`users/${userId}`);
       dispatch({ type: 'LOAD_USERS', payload: res.data });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const getBalance = async (userId) => {
+    try {
+      const res = await http.httpAll.get(`users/balance/${userId}`);
+      console.log('res', res.data);
+      dispatch({ type: 'LOAD_BALANCE', payload: res.data });
     } catch (e) {
       console.error(e);
     }
@@ -134,13 +163,16 @@ export const UserProvider = ({ children }) => {
       value={{
         getUsers,
         getUser,
+        getAllUser,
         getAgents,
         deleteUser,
         clearUsers,
         createUser,
         updateUser,
+        getBalance,
         users: state.users,
         agents: state.agents,
+        balances: state.balances,
         contextMsg: state.contextMsg,
         contextStatus: state.contextStatus
       }}

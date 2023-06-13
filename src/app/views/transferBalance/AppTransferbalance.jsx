@@ -1,8 +1,9 @@
 import { Box, styled } from '@mui/material';
 import { Breadcrumb } from 'app/components';
 import TransferBalance from './Transferbalance';
+import TransferbalanceAdd from './TransferbalanceAdd';
 import { TransferbalanceProvider } from 'app/contexts/TransferbalanceContext';
-
+import { UserProvider } from 'app/contexts/UserContext';
 const Container = styled('div')(({ theme }) => ({
   margin: '30px',
   [theme.breakpoints.down('sm')]: { margin: '16px' },
@@ -12,15 +13,22 @@ const Container = styled('div')(({ theme }) => ({
   }
 }));
 
-const AppTransferbalance = () => {
+const AppTransferbalance = (props) => {
+  const displayApp = () => {
+    if (props?.action && props.action === 'add') {
+      return <TransferbalanceAdd />;
+     }
+    else if (props?.action && props.action === 'edit') {
+      return <TransferBalance />;
+    } else return <TransferBalance />;
+	
+	
+  };
   return (
     <Container>
-      <Box className="breadcrumb">
-        <Breadcrumb routeSegments={[{ name: 'Transferbalance', path: '/transferBalance' }]} />
-        <TransferbalanceProvider>
-          <TransferBalance />
-        </TransferbalanceProvider>
-      </Box>
+	 <UserProvider>
+      <TransferbalanceProvider>{displayApp()}</TransferbalanceProvider>
+	  </UserProvider>
     </Container>
   );
 };
