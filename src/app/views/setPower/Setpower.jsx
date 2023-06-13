@@ -1,10 +1,13 @@
 import {
   Box,
+  Icon,
+  Fab,
   styled,
   Paper,
   TableBody,
   TableRow,
   TableCell,
+  useTheme,
   Toolbar,
   TextField
 } from '@mui/material';
@@ -14,6 +17,7 @@ import useSetpower from 'app/hooks/useSetpower';
 import useTable from '../material-kit/tables/hooks/useTable';
 import { useClasses } from '../material-kit/tables/hooks/useClasses';
 import { useEffect } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const Container = styled('div')(({ theme }) => ({
   margin: '30px',
@@ -29,8 +33,9 @@ const Container = styled('div')(({ theme }) => ({
 }));
 
 const SetPower = () => {
-  const { getSetpowers, setpowers } = useSetpower();
-
+  const { getSetpowers, powers } = useSetpower();
+  const { palette } = useTheme();
+  const navigate = useNavigate();
   useEffect(() => {
     getSetpowers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -62,7 +67,7 @@ const SetPower = () => {
   });
 
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } = useTable(
-    setpowers,
+    powers,
     headCells,
     filterFn
   );
@@ -85,16 +90,30 @@ const SetPower = () => {
             subTitle="Form design with validation"
             icon={<PeopleOutlineTwoToneIcon fontSize="large" />}
           /> */}
-          {setpowers && (
+          {powers && (
             <Paper>
               {/* <EmployeeForm /> */}
               <Toolbar>
-                <TextField
-                  variant="outlined"
-                  label="Search Setpower"
-                  className={classes.searchInput}
-                  onChange={handleSearch}
-                />
+                <Box
+                  component="span"
+                  m={1}
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  sx={{ width: '100%' }}
+                >
+                  <TextField
+                    variant="outlined"
+                    label="Search Setpower"
+                    className={classes.searchInput}
+                    onChange={handleSearch}
+                  />
+                  <NavLink to="/setpower/add" style={{ color: palette.primary.main }}>
+                    <Fab size="medium" color="primary" aria-label="Add" className="button">
+                      <Icon>add</Icon>
+                    </Fab>
+                  </NavLink>
+                </Box>
               </Toolbar>
               <TblContainer>
                 <TblHead />

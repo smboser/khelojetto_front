@@ -1,6 +1,7 @@
 import { Box, styled } from '@mui/material';
 import { Breadcrumb } from 'app/components';
 import SetPower from './Setpower';
+import SetpowerAdd from './SetpowerAdd';
 import { SetpowerProvider } from 'app/contexts/SetpowerContext';
 
 const Container = styled('div')(({ theme }) => ({
@@ -12,17 +13,25 @@ const Container = styled('div')(({ theme }) => ({
   }
 }));
 
-const AppSetpower = () => {
+const AppSetpower = (props) => {
+  const displayApp = () => {
+    if (props?.action && props.action === 'add') {
+      return <SetpowerAdd />;
+     }
+    else if (props?.action && props.action === 'edit') {
+      return <SetPower />;
+    } else return <SetPower />;
+	
+	
+  };
   return (
     <Container>
-      <Box className="breadcrumb">
-        <Breadcrumb routeSegments={[{ name: 'Setpower', path: '/stockez' }]} />
-        <SetpowerProvider>
-          <SetPower />
-        </SetpowerProvider>
-      </Box>
+	
+      <SetpowerProvider>{displayApp()}</SetpowerProvider>
+	 
     </Container>
   );
 };
+
 
 export default AppSetpower;

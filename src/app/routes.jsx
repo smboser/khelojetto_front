@@ -29,6 +29,7 @@ const AppSetpower = Loadable(lazy(() => import('app/views/setPower/AppSetpower')
 const AppTransferbalance = Loadable(
   lazy(() => import('app/views/transferBalance/AppTransferbalance'))
 );
+
 const hocComponent = (WrappedComponent) => {
   return (props) => <WrappedComponent {...props} />;
 };
@@ -37,6 +38,7 @@ const StockezComponent = hocComponent(AppStockez);
 const AgentComponent = hocComponent(AppAgent);
 const PlayerComponent = hocComponent(AppPlayer);
 const TransferbalanceComponent = hocComponent(AppTransferbalance);
+const SetpowerComponent = hocComponent(AppSetpower);
 
 const routes = [
   {
@@ -64,62 +66,67 @@ const routes = [
       {
         path: '/users/stockez',
         element: <StockezComponent action="list" />,
-        auth: authRoles.admin
+        auth: authRoles.sa
       },
       {
         path: '/users/stockez/add',
         element: <StockezComponent action="add" />,
-        auth: authRoles.admin
+        auth: authRoles.sa
       },
       {
         path: '/users/stockez/edit/:userId',
         element: <StockezComponent action="edit" />,
-        auth: authRoles.admin
+        auth: authRoles.sa
       },
       {
         path: '/users/agent',
         element: <AgentComponent action="list" />,
-        auth: authRoles.admin
+        auth: authRoles.sa
       },
       {
         path: '/users/agent/add',
         element: <AgentComponent action="add" />,
-        auth: authRoles.admin
+        auth: authRoles.sa
       },
       {
         path: '/users/agent/edit/:userId',
         element: <AgentComponent action="edit" />,
-        auth: authRoles.admin
+        auth: authRoles.sa
       },
       {
         path: '/users/player',
         element: <PlayerComponent action="list" />,
-        auth: authRoles.admin
+        auth: authRoles.sa
       },
       {
         path: '/users/player/add',
         element: <PlayerComponent action="add" />,
-        auth: authRoles.admin
+        auth: authRoles.sa
       },
       {
         path: '/users/player/edit/:userId/:stoId',
         element: <PlayerComponent action="edit" />,
-        auth: authRoles.admin
+        auth: authRoles.sa
       },
       {
-        path: '/setpowers/setPower',
-        element: <AppSetpower />,
-        auth: authRoles.admin
+        path: '/setpower',
+        element: <SetpowerComponent action="list" />,
+        auth: authRoles.sa
+      },
+      {
+        path: '/setpower/add',
+        element: <SetpowerComponent action="add" />,
+        auth: authRoles.sa
       },
       {
         path: '/points/transferBalance',
         element: <AppTransferbalance />,
-        auth: authRoles.admin
+        auth: authRoles.sa
       },
-	   {
+      {
         path: '/points/transferBalance/add',
         element: <TransferbalanceComponent action="add" />,
-        auth: authRoles.admin
+        auth: authRoles.sa
       }
     ]
   },

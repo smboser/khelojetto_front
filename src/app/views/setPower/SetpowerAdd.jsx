@@ -2,11 +2,8 @@ import {
   Box,
   Stack,
   Button,
-  FormControlLabel,
   Grid,
   Icon,
-  Radio,
-  RadioGroup,
   styled,
   Alert,
   Snackbar,
@@ -17,12 +14,11 @@ import {
 import { useEffect, useState } from 'react';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 // import { LocalizationProvider } from '@mui/lab';
-import useUser from 'app/hooks/useUser';
-import useTransferbalance from 'app/hooks/useTransferbalance';
-import useAuth from 'app/hooks/useAuth';
+
+import useSetpower from 'app/hooks/useSetpower';
 import { Span } from 'app/components/Typography';
 import { Breadcrumb, SimpleCard } from 'app/components';
-
+import { useParams } from 'react-router-dom';
 // import Stockez from './Stockez';
 
 const Container = styled('div')(({ theme }) => ({
@@ -39,15 +35,25 @@ const TextField = styled(TextValidator)(() => ({
   marginBottom: '16px'
 }));
 
-const TransferbalanceAdd = () => {
+const powers = [
+  
+  { value: '2', label: '2x' },
+  { value: '3', label: '3x' },
+  { value: '4', label: '4x' },
+  { value: '5', label: '5x' },
+  { value: '6', label: '6x' },
+  { value: '7', label: '7x' },
+  { value: '8', label: '8x' },
+  { value: '9', label: '9x' },
+  { value: '10', label: '10x' }
+];
+
+const SetpowerAdd = () => {
   const [state, setState] = useState({ date: new Date() });
   const [response, setResponse] = useState(false); // For api response
-  const { getAllUser, users, getBalance, balances } = useUser();
-  const { getTransferbalances, createTransferbalance, contextMsg, contextStatus } =
-    useTransferbalance();
+  const {createSetpower,getRandomGame, powerSingle, contextMsg, contextStatus } = useSetpower();
   const [loading, setLoading] = useState(false);
-  const [balanceAmount, setbalanceAmount] = useState();
-  const { user } = useAuth();
+   const [count, setCount] = useState('');
   // Snackbar code
   const [open, setOpen] = useState(false);
   if (contextMsg && open === false && response === false) {
@@ -63,22 +69,29 @@ const TransferbalanceAdd = () => {
   // Snackbar code
 
   useEffect(() => {
-    getAllUser();
-    console.log('dmty=', users);
-    if (users && typeof users === 'object' && Array.isArray(users)) {
-      setState({ ...state, ...users });
-    }
-  }, [!users || (users && !Array.isArray(users))]);
+        //Implementing the setInterval method
+        const interval = setInterval(() => {
+			//const result = Math.random().toString(36).substring(2,7);
+			let result = ' ';
+			const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+			const charactersLength = characters.length;
+            for ( let i = 0; i < 8; i++ ) {
+              result += characters.charAt(Math.floor(Math.random() * charactersLength));
+           }
+            setCount(result);
+        }, 2000);
+  
+        //Clearing the interval
+        return () => clearInterval(interval);
+  }, [count]);
 
-  console.log('fggggggg=', users);
   const handleSubmit = (event) => {
     setLoading(true);
     setOpen(false); // Making snackbar off if it is on somehow
     setResponse(false); //
     try {
-      console.log('sdfsdfsdfs=', state);
       // Adding usertype for Stockez
-      createTransferbalance({ ...state, from_id: user.user_id }); // 1 ==> User Type Stockez
+       createSetpower({ ...state }); // 1 ==> User Type Stockez
       setLoading(false);
       //navigate('/');
     } catch (e) {
@@ -93,16 +106,6 @@ const TransferbalanceAdd = () => {
       ...state,
       [inputName]: inputVal
     });
-
-    const filtered = users.filter((user) => {
-      return user.user_id === inputVal;
-    });
-
-    //setState({ ...state, ...filtered });
-
-    let balanced = filtered[0].balance;
-
-    setbalanceAmount(balanced);
   };
 
   const handleChange = (event) => {
@@ -111,16 +114,14 @@ const TransferbalanceAdd = () => {
   };
 
   //const handleDateChange = (date) => setState({ ...state, date });
-  const { from_id, to_id, amount, transfer_on, last_balance } = state;
-  console.log('NewBalamce=', balanceAmount);
+  const { game_id, power } = state;
+  console.log('gghh=', state);
+
   return (
     <Container>
       <Box className="breadcrumb">
         <Breadcrumb
-          routeSegments={[
-            { name: 'TransferBalance', path: '/points/transferBalance' },
-            { name: 'Add TransferBalance' }
-          ]}
+          routeSegments={[{ name: 'setpower', path: '/setpower' }, { name: 'Add setpower' }]}
         />
         {contextMsg && (
           <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -136,51 +137,42 @@ const TransferbalanceAdd = () => {
         )}
         <Container>
           <Stack spacing={3}>
-            <SimpleCard title="Add a TransferBalance">
+            <SimpleCard title="Add a Power">
               <div>
                 <ValidatorForm onSubmit={handleSubmit} onError={() => null}>
                   <Grid container spacing={6}>
                     <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
-                      <InputLabel id="demo-simple-select-label"> Username</InputLabel>
+                      <TextField
+                        type="text"
+                        name="game_id"
+                        id="standard-basic"
+                        value={count || 0}
+                        onChange={handleChange}
+                        errorMessages={['this field is required']}
+                        label="Game "
+                        validators={['required']}
+                        errorMessages={['this field is required']}
+                      />
+
+                      <InputLabel id="demo-simple-select-label"> Power</InputLabel>
 
                       <Select
-                        id="stokes"
+                        id="power"
                         onChange={handleInput}
-                        name="to_id"
-                        defaultValue={'Please select stokes'}
+                        name="power"
+                        defaultValue={'Please select'}
                         fullWidth
                         variant="outlined"
                         validators={['required']}
                         errorMessages={['this field is required']}
                       >
-                        {users &&
-                          users.map((item, index) => (
-                            <MenuItem key={index} value={item.user_id}>
-                              {item.name}
+                        {powers &&
+                          powers.map((item, index) => (
+                            <MenuItem key={index} value={item.value}>
+                              {item.label}
                             </MenuItem>
                           ))}
                       </Select>
-
-                      <TextField
-                        type="text"
-                        name="balanceAmount"
-                        id="standard-basic"
-                        value={balanceAmount || 0}
-                        onChange={handleChange}
-                        errorMessages={['this field is required']}
-                        label="Balance "
-                        validators={[]}
-                      />
-
-                      <TextField
-                        type="text"
-                        name="amount"
-                        label="Amount to transfer"
-                        onChange={handleChange}
-                        value={amount || ''}
-                        validators={['required']}
-                        errorMessages={['this field is required']}
-                      />
                     </Grid>
                   </Grid>
 
@@ -198,4 +190,4 @@ const TransferbalanceAdd = () => {
   );
 };
 
-export default TransferbalanceAdd;
+export default SetpowerAdd;

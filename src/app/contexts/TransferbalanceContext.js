@@ -89,7 +89,9 @@ export const TransferbalanceProvider = ({ children }) => {
       value={{
         getTransferbalances,
         points: state.points,
-        createTransferbalance
+        createTransferbalance,
+		contextMsg: state.contextMsg,
+        contextStatus: state.contextStatus
       }}
     >
       {children}

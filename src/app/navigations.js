@@ -82,7 +82,7 @@ export const navigations = [
     name: 'Set Power',
     icon: 'blur_linear',
     role: authRoles.saStockez,
-    path: '/setpowers/setPower'
+    path: '/setpower'
   },
 
   {
