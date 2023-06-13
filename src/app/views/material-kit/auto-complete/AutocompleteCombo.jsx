@@ -4,7 +4,7 @@ import React, { Fragment } from 'react';
 
 const AutoComplete = styled(Autocomplete)(() => ({
   width: 300,
-  marginBottom: '16px',
+  marginBottom: '16px'
 }));
 
 const suggestions = [
@@ -41,7 +41,7 @@ const suggestions = [
   { label: 'Bouvet Island' },
   { label: 'Brazil' },
   { label: 'British Indian Ocean Territory' },
-  { label: 'Brunei Darussalam' },
+  { label: 'Brunei Darussalam' }
 ];
 
 const filter = createFilterOptions();

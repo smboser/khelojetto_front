@@ -63,57 +63,57 @@ const routes = [
       {
         path: '/users/stockez',
         element: <StockezComponent action="list" />,
-        auth: authRoles.admin
+        auth: authRoles.sa
       },
       {
         path: '/users/stockez/add',
         element: <StockezComponent action="add" />,
-        auth: authRoles.admin
+        auth: authRoles.sa
       },
       {
         path: '/users/stockez/edit/:userId',
         element: <StockezComponent action="edit" />,
-        auth: authRoles.admin
+        auth: authRoles.sa
       },
       {
         path: '/users/agent',
         element: <AgentComponent action="list" />,
-        auth: authRoles.admin
+        auth: authRoles.saStockez
       },
       {
         path: '/users/agent/add',
         element: <AgentComponent action="add" />,
-        auth: authRoles.admin
+        auth: authRoles.saStockez
       },
       {
         path: '/users/agent/edit/:userId',
         element: <AgentComponent action="edit" />,
-        auth: authRoles.admin
+        auth: authRoles.saStockez
       },
       {
         path: '/users/player',
         element: <PlayerComponent action="list" />,
-        auth: authRoles.admin
+        auth: authRoles.saStockez
       },
       {
         path: '/users/player/add',
         element: <PlayerComponent action="add" />,
-        auth: authRoles.admin
+        auth: authRoles.saStockez
       },
       {
         path: '/users/player/edit/:userId/:stoId',
         element: <PlayerComponent action="edit" />,
-        auth: authRoles.admin
+        auth: authRoles.saStockez
       },
       {
-        path: '/setpowers/setPower',
+        path: '/setpowers/set-power',
         element: <AppSetpower />,
-        auth: authRoles.admin
+        auth: authRoles.saStockez
       },
       {
         path: '/points/transferBalance',
         element: <AppTransferbalance />,
-        auth: authRoles.admin
+        auth: authRoles.saStockez
       }
     ]
   },
