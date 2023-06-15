@@ -29,6 +29,7 @@ const AppSetpower = Loadable(lazy(() => import('app/views/setPower/AppSetpower')
 const AppTransferbalance = Loadable(
   lazy(() => import('app/views/transferBalance/AppTransferbalance'))
 );
+
 const hocComponent = (WrappedComponent) => {
   return (props) => <WrappedComponent {...props} />;
 };
@@ -36,6 +37,8 @@ const hocComponent = (WrappedComponent) => {
 const StockezComponent = hocComponent(AppStockez);
 const AgentComponent = hocComponent(AppAgent);
 const PlayerComponent = hocComponent(AppPlayer);
+const TransferbalanceComponent = hocComponent(AppTransferbalance);
+const SetpowerComponent = hocComponent(AppSetpower);
 
 const routes = [
   {
@@ -111,7 +114,7 @@ const routes = [
         auth: authRoles.saStockez
       },
       {
-        path: '/points/transferBalance',
+        path: '/points/transfer-balance',
         element: <AppTransferbalance />,
         auth: authRoles.saStockez
       }

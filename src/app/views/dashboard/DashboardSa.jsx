@@ -35,7 +35,7 @@ const DashboardSa = () => {
       <DashboardItem
         img="/assets/images/icons/v3.png"
         text="Point Trasnfer"
-        link="/points/transferBalance"
+        link="/points/transfer-balance"
       ></DashboardItem>
     </ContentBox>
   );

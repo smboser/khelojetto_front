@@ -89,6 +89,6 @@ export const navigations = [
     name: 'Point Transfer',
     icon: 'cached',
     role: authRoles.saStockez,
-    path: '/points/transferBalance'
+    path: '/points/transfer-balance'
   }
 ];

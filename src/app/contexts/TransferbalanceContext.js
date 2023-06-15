@@ -16,6 +16,10 @@ const reducer = (state, action) => {
       return { ...state, points: action.payload };
     }
 
+    case 'CREATE_TRANSFERBALANCE': {
+      return { ...state, ...action.payload };
+    }
+
     default:
       return state;
   }
@@ -25,8 +29,8 @@ const TransferbalanceContext = createContext({
   points: [],
   //deleteSetpower: () => {},
   // clearSetpower: () => {},
-  getTransferbalances: () => {}
-  //createSetpower: () => {}
+  getTransferbalances: () => {},
+  createTransferbalance: () => {}
 });
 
 export const TransferbalanceProvider = ({ children }) => {
@@ -59,11 +63,35 @@ export const TransferbalanceProvider = ({ children }) => {
     }
   };
 
+  const createTransferbalance = async (point) => {
+    try {
+      await http.httpAll.post(`points/add`, { ...point });
+      dispatch({
+        type: 'CREATE_TRANSFERBALANCE',
+        payload: { contextStatus: 1, contextMsg: 'Transfer Balance created successfully.' }
+      });
+    } catch (e) {
+      dispatch({
+        type: 'CREATE_TRANSFERBALANCE',
+        payload: { contextStatus: 0, contextMsg: 'Error! Please try later.' }
+      });
+      console.error(e);
+    }
+  };
+
+  // useEffect(() => {
+  //   console.log('User Context calling');
+  //   getStockez(1);
+  // }, []);
+
   return (
     <TransferbalanceContext.Provider
       value={{
         getTransferbalances,
-        points: state.points
+        points: state.points,
+        createTransferbalance,
+		contextMsg: state.contextMsg,
+        contextStatus: state.contextStatus
       }}
     >
       {children}
