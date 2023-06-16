@@ -109,15 +109,25 @@ const routes = [
         auth: authRoles.saStockez
       },
       {
-        path: '/setpowers/set-power',
-        element: <AppSetpower />,
+        path: '/setpower',
+        element: <SetpowerComponent action="list" />,
         auth: authRoles.saStockez
+      },
+	  {
+        path: '/setpower/add',
+        element: <SetpowerComponent action="add" />,
+        auth: authRoles.sa
       },
       {
         path: '/points/transfer-balance',
-        element: <AppTransferbalance />,
-        auth: authRoles.saStockez
-      }
+        element: <TransferbalanceComponent action="list" />,
+        auth: authRoles.sa
+      },
+	  {
+        path: '/points/transfer-balance/add',
+        element: <TransferbalanceComponent action="add" />,
+        auth: authRoles.sa
+      },
     ]
   },
 

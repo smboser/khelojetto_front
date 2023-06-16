@@ -76,9 +76,27 @@ const TransferbalanceAdd = () => {
     setOpen(false); // Making snackbar off if it is on somehow
     setResponse(false); //
     try {
-      console.log('sdfsdfsdfs=', state);
+    let date_ob = new Date();
+    let date = ("0" + date_ob.getDate()).slice(-2);
+    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+    let year = date_ob.getFullYear();
+    let hours = date_ob.getHours();
+    let minutes = date_ob.getMinutes();
+    let seconds = date_ob.getSeconds();
+    let finaldt =
+      year +
+      "-" +
+      month +
+      "-" +
+      date +
+      " " +
+      hours +
+      ":" +
+      minutes +
+      ":" +
+      seconds;
       // Adding usertype for Stockez
-      createTransferbalance({ ...state, from_id: user.user_id }); // 1 ==> User Type Stockez
+      createTransferbalance({ ...state, from_id: user.user_id,transfer_on:finaldt }); // 1 ==> User Type Stockez
       setLoading(false);
       //navigate('/');
     } catch (e) {

@@ -28,6 +28,8 @@ import { useClasses } from '../material-kit/tables/hooks/useClasses';
 import { useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
+
+
 const Container = styled('div')(({ theme }) => ({
   margin: '30px',
   [theme.breakpoints.down('sm')]: {
@@ -42,8 +44,13 @@ const Container = styled('div')(({ theme }) => ({
 }));
 
 const TransferBalance = () => {
-  const { getTransferbalances, points } = useTransferbalance();
-  const { palette } = useTheme();
+  const { getTransferbalances, points,contextMsg, contextStatus } = useTransferbalance();
+   const { palette } = useTheme();
+   const [delOpen, setDelOpen] = useState(false);
+  const [delUsername, setDelUsername] = useState('');
+  const [delUserId, setDelUserId] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [response, setResponse] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -60,13 +67,41 @@ const TransferBalance = () => {
       width: '100%'
     }
   });
+  
+  const handleClose = (_, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+  // Snackbar code
+
+  const handleEdit = (userId) => {
+    navigate(`/points/transferBalance/edit/${userId}`);
+  };
+
+  const handleDelete = (userId, username) => {
+    setDelOpen(true);
+    setDelUsername(username);
+    setDelUserId(userId);
+  };
+  const handleDelClose = () => setDelOpen(false);
+  
+  const handleDelYes = () => {
+    if (delUserId > 0) {
+      setOpen(false); // Making Snackbar off if it is on somehow
+      setResponse(false); //
+      //deleteUser(delUserId);
+    }
+    setDelOpen(false);
+  };
 
   const classes = useClasses(styles);
 
   const headCells = [
     { id: 'id', label: 'Id' },
-    { id: 'from_id', label: 'From Id' },
-    { id: 'to_id', label: 'To Id' },
+    { id: 'from_id', label: 'From Name' },
+    { id: 'to_id', label: 'To Name' },
     { id: 'amount', label: 'Amount' },
     { id: 'last_balance', label: 'Last Balance' },
     { id: 'transfer_on', label: 'Transfer On' },
@@ -96,6 +131,21 @@ const TransferBalance = () => {
   };
   return (
     <Container>
+      <Box className="breadcrumb">
+        <Breadcrumb routeSegments={[{ name: 'TransferBalance', path: '/points/transfer-balance' }]} />
+        {contextMsg && (
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert
+              onClose={handleClose}
+              severity={contextStatus === 1 ? 'success' : 'error'}
+              sx={{ width: '100%' }}
+              variant="filled"
+            >
+              {contextMsg}
+            </Alert>
+          </Snackbar>
+        )}
+    <Container>
       <SimpleCard title="Point">
         <Box width="100%" overflow="auto">
           {/* <PageHeader
@@ -107,29 +157,26 @@ const TransferBalance = () => {
             <Paper>
               {/* <EmployeeForm /> */}
               <Toolbar>
-                <Box
-                  component="span"
-                  m={1}
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  sx={{ width: '100%' }}
-                >
-                  <TextField
-                    variant="outlined"
-                    label="Search Point"
-                    className={classes.searchInput}
-                    onChange={handleSearch}
-                  />
-                  <NavLink
-                    to="/points/transfer-balance/add"
-                    style={{ color: palette.primary.main }}
-                  >
-                    <Fab size="medium" color="primary" aria-label="Add" className="button">
-                      <Icon>add</Icon>
-                    </Fab>
-                  </NavLink>
-                </Box>
+			  <Box
+                      component="span"
+                      m={1}
+                      display="flex"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      sx={{ width: '100%' }}
+                    >
+                <TextField
+                  variant="outlined"
+                  label="Search Point"
+                  className={classes.searchInput}
+                  onChange={handleSearch}
+                />
+				<NavLink to="/points/transfer-balance/add" style={{ color: palette.primary.main }}>
+                       <Fab size="medium" color="primary" aria-label="Add" className="button">
+                        <Icon>add</Icon>
+                       </Fab>
+                      </NavLink>
+					   </Box>
               </Toolbar>
               <TblContainer>
                 <TblHead />
@@ -138,12 +185,15 @@ const TransferBalance = () => {
                     recordsAfterPagingAndSorting().map((item) => (
                       <TableRow key={item.id}>
                         <TableCell>{item.id}</TableCell>
-                        <TableCell>{item.from_id}</TableCell>
-                        <TableCell>{item.to_id}</TableCell>
+                        <TableCell>{item.frmName}</TableCell>
+                        <TableCell>{item.toName}</TableCell>
                         <TableCell>{item.amount}</TableCell>
-                        <TableCell>{item.last_balance}</TableCell>
+                        <TableCell>{item.balance}</TableCell>
                         <TableCell>{item.transfer_on}</TableCell>
-                        <TableCell></TableCell>
+                        <TableCell>
+						 
+						
+						</TableCell>
                       </TableRow>
                     ))}
                 </TableBody>
@@ -153,6 +203,32 @@ const TransferBalance = () => {
           )}
         </Box>
       </SimpleCard>
+    </Container>
+	<Dialog
+          open={delOpen}
+          onClose={handleDelClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">Delete User ?</DialogTitle>
+
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you surce you want to delete User <strong>{delUsername}</strong> ?
+            </DialogContentText>
+          </DialogContent>
+
+          <DialogActions>
+            <Button onClick={handleDelYes} color="primary">
+              Yes
+            </Button>
+
+            <Button onClick={handleDelClose} color="primary" autoFocus>
+              Cancel
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
     </Container>
   );
 };

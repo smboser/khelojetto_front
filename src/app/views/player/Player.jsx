@@ -196,8 +196,8 @@ const Player = () => {
                             <TableCell>{item.user_id}</TableCell>
                             <TableCell>{item.username}</TableCell>
                             <TableCell>{item.name}</TableCell>
-                            <TableCell>{item.sto_id}</TableCell>
-                            <TableCell>{item.ag_id}</TableCell>
+                            <TableCell>{item.stoName}</TableCell>
+                            <TableCell>{item.agName}</TableCell>
                             <TableCell></TableCell>
                             <TableCell>{item.balance}</TableCell>
 
