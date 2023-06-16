@@ -196,7 +196,7 @@ const Agent = () => {
                             <TableCell>{item.user_id}</TableCell>
                             <TableCell>{item.username}</TableCell>
                             <TableCell>{item.name}</TableCell>
-                            <TableCell>{item.sto_id}</TableCell>
+                            <TableCell>{item.frmName}</TableCell>
                             <TableCell>{item.revenue}</TableCell>
                             <TableCell>{item.type}</TableCell>
                             <TableCell>{item.balance}</TableCell>

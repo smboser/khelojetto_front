@@ -9,9 +9,11 @@ import {
   TableCell,
   useTheme,
   Toolbar,
-  TextField
+  TextField,
+   Alert,
+  Snackbar
 } from '@mui/material';
-import { SimpleCard } from 'app/components';
+import {Breadcrumb, SimpleCard } from 'app/components';
 import { useState } from 'react';
 import useSetpower from 'app/hooks/useSetpower';
 import useTable from '../material-kit/tables/hooks/useTable';
@@ -33,9 +35,10 @@ const Container = styled('div')(({ theme }) => ({
 }));
 
 const SetPower = () => {
-  const { getSetpowers, powers } = useSetpower();
+  const { getSetpowers, powers, contextMsg, contextStatus } = useSetpower();
   const { palette } = useTheme();
   const navigate = useNavigate();
+   const [open, setOpen] = useState(false);
   useEffect(() => {
     getSetpowers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -50,6 +53,13 @@ const SetPower = () => {
       width: '100%'
     }
   });
+  
+  const handleClose = (_, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
 
   const classes = useClasses(styles);
 
@@ -82,6 +92,21 @@ const SetPower = () => {
     });
   };
   return (
+     <Container>
+      <Box className="breadcrumb">
+        <Breadcrumb routeSegments={[{ name: 'Setpower', path: '/setpower' }]} />
+        {contextMsg && (
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert
+              onClose={handleClose}
+              severity={contextStatus === 1 ? 'success' : 'error'}
+              sx={{ width: '100%' }}
+              variant="filled"
+            >
+              {contextMsg}
+            </Alert>
+          </Snackbar>
+        )}
     <Container>
       <SimpleCard title="Setpower">
         <Box width="100%" overflow="auto">
@@ -134,6 +159,8 @@ const SetPower = () => {
           )}
         </Box>
       </SimpleCard>
+    </Container>
+	</Box>
     </Container>
   );
 };

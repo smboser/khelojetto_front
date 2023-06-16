@@ -1,7 +1,7 @@
 import { createContext, useReducer } from 'react';
 import axios from 'axios';
 import http from '../../config/http';
-
+import Settings from '../../config/config';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'LOAD_USERS': {
@@ -80,7 +80,9 @@ export const UserProvider = ({ children }) => {
 
   const getUsers = async (typeId) => {
     try {
-      const res = await http.httpAll.get(`users/type/${typeId}`);
+	  let tokenPayload = null;
+		tokenPayload = localStorage.getItem(Settings.tokenName);	
+      const res = await http.httpAll.get(`users/type/${typeId}/${tokenPayload}`);
       dispatch({ type: 'LOAD_USERS', payload: res.data });
     } catch (e) {
       console.error(e);

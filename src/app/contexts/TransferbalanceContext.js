@@ -1,11 +1,12 @@
 import { createContext, useEffect, useReducer } from 'react';
 import axios from 'axios';
 import http from '../../config/http';
+import Settings from '../../config/config';
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'LOAD_TRANSFERBALANCE': {
-      return { ...state, points: action.payload };
+      return { ...state, points: action.payload,contextStatus: null, contextMsg: null };
     }
 
     case 'DELETE_TRANSFERBALANCE': {
@@ -56,7 +57,10 @@ export const TransferbalanceProvider = ({ children }) => {
  */
   const getTransferbalances = async () => {
     try {
-      const res = await http.httpAll.get(`points`);
+		let tokenPayload = null;
+		tokenPayload = localStorage.getItem(Settings.tokenName);
+   console.log("sumite="+tokenPayload);
+      const res = await http.httpAll.get(`points?name=${tokenPayload}`);
       dispatch({ type: 'LOAD_TRANSFERBALANCE', payload: res.data });
     } catch (e) {
       console.error(e);
@@ -65,6 +69,8 @@ export const TransferbalanceProvider = ({ children }) => {
 
   const createTransferbalance = async (point) => {
     try {
+		
+  
       await http.httpAll.post(`points/add`, { ...point });
       dispatch({
         type: 'CREATE_TRANSFERBALANCE',
