@@ -10,12 +10,10 @@ import {
   styled,
   Alert,
   Snackbar,
-  Select,
-  InputLabel,
   MenuItem
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
+import { SelectValidator, TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 // import { LocalizationProvider } from '@mui/lab';
 import useUser from 'app/hooks/useUser';
 
@@ -34,6 +32,11 @@ const Container = styled('div')(({ theme }) => ({
 }));
 
 const TextField = styled(TextValidator)(() => ({
+  width: '100%',
+  marginBottom: '16px'
+}));
+
+const SelectField = styled(SelectValidator)(() => ({
   width: '100%',
   marginBottom: '16px'
 }));
@@ -100,7 +103,8 @@ const AgentAdd = () => {
   };
 
   //const handleDateChange = (date) => setState({ ...state, date });
-  const { username, name, mobile, password, confirmPassword, user_status, email, type } = state;
+  const { username, name, mobile, password, confirmPassword, user_status, email, sto_id, type } =
+    state;
   return (
     <Container>
       <Box className="breadcrumb">
@@ -156,36 +160,38 @@ const AgentAdd = () => {
                         validators={['required', 'isEmail']}
                         errorMessages={['this field is required', 'email is not valid']}
                       />
+                      {users && (
+                        <SelectField
+                          id="stokes"
+                          label="Stockez"
+                          onChange={handleInput}
+                          name="sto_id"
+                          value={sto_id || ''}
+                          fullWidth
+                          validators={['required']}
+                          errorMessages={['this field is required']}
+                        >
+                          {users &&
+                            users.map((item, index) => (
+                              <MenuItem key={index} value={item.user_id}>
+                                {item.name}
+                              </MenuItem>
+                            ))}
+                        </SelectField>
+                      )}
 
-                      <InputLabel id="demo-simple-select-label"> Stockes</InputLabel>
-
-                      <Select
-                        id="stokes"
-                        onChange={handleInput}
-                        name="sto_id"
-                        defaultValue={'Please select stokes'}
-                        fullWidth
-                        variant="outlined"
-                      >
-                        {users &&
-                          users.map((item, index) => (
-                            <MenuItem key={index} value={item.user_id}>
-                              {item.name}
-                            </MenuItem>
-                          ))}
-                      </Select>
-
-                      <InputLabel id="demo-simple-select-label"> Type</InputLabel>
-                      <Select
+                      <SelectField
                         id="schoolType"
+                        label="Type"
                         onChange={handleInput}
                         name="type"
-                        defaultValue={type || ''}
+                        value={type || ''}
                         fullWidth
-                        variant="outlined"
+                        validators={['required']}
+                        errorMessages={['this field is required']}
                       >
-                        <MenuItem value={'TN'}>{'TN'}</MenuItem>
-                      </Select>
+                        <MenuItem value="TN">TN</MenuItem>
+                      </SelectField>
 
                       {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
                           <DatePicker

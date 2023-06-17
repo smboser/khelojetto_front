@@ -15,7 +15,7 @@ import {
   MenuItem
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
+import { SelectValidator, TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import { useNavigate, useParams } from 'react-router-dom';
 // import { LocalizationProvider } from '@mui/lab';
 import useUser from 'app/hooks/useUser';
@@ -33,6 +33,11 @@ const Container = styled('div')(({ theme }) => ({
 }));
 
 const TextField = styled(TextValidator)(() => ({
+  width: '100%',
+  marginBottom: '16px'
+}));
+
+const SelectField = styled(SelectValidator)(() => ({
   width: '100%',
   marginBottom: '16px'
 }));
@@ -172,26 +177,26 @@ const AgentEdit = () => {
                         validators={['required', 'isEmail']}
                         errorMessages={['this field is required', 'email is not valid']}
                       />
-                      <InputLabel id="demo-simple-select-label"> Stokes</InputLabel>
+                      {stokesdetails && (
+                        <SelectField
+                          id="stokes"
+                          label="Stockez"
+                          onChange={handleInput}
+                          name="sto_id"
+                          value={sto_id || ''}
+                          fullWidth
+                          variant="outlined"
+                        >
+                          {stokesdetails &&
+                            stokesdetails.map((item, index) => (
+                              <MenuItem key={index} value={item.user_id}>
+                                {item.name}
+                              </MenuItem>
+                            ))}
+                        </SelectField>
+                      )}
 
-                      <Select
-                        id="stokes"
-                        onChange={handleInput}
-                        name="sto_id"
-                        value={sto_id || ''}
-                        fullWidth
-                        variant="outlined"
-                      >
-                        {stokesdetails &&
-                          stokesdetails.map((item, index) => (
-                            <MenuItem key={index} value={item.user_id}>
-                              {item.name}
-                            </MenuItem>
-                          ))}
-                      </Select>
-
-                      <InputLabel id="demo-simple-select-label"> Type</InputLabel>
-                      <Select
+                      <SelectField
                         id="schoolType"
                         label="Select Type"
                         onChange={handleInput}
@@ -200,8 +205,8 @@ const AgentEdit = () => {
                         fullWidth
                         variant="outlined"
                       >
-                        <MenuItem value={'TN'}>{'TN'}</MenuItem>
-                      </Select>
+                        <MenuItem value="TN">TN</MenuItem>
+                      </SelectField>
                     </Grid>
                     <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                       <TextField
